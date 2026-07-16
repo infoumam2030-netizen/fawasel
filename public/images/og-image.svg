@@ -1,10 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-<defs><linearGradient id="g_og" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6B4FA1"/><stop offset="60%" stop-color="#7C5BCB"/><stop offset="100%" stop-color="#111111"/></linearGradient></defs>
-<rect width="1200" height="630" fill="url(#g_og)"/>
-<circle cx="1020" cy="120" r="90" fill="#C9A55C" opacity="0.5"/>
-<rect x="40" y="415.8" width="65" height="214.2" rx="6" fill="rgba(255,255,255,0.14)"/><rect x="123" y="428.0" width="60" height="202.0" rx="6" fill="rgba(255,255,255,0.14)"/><rect x="206" y="415.8" width="64" height="214.2" rx="6" fill="rgba(255,255,255,0.14)"/><rect x="284" y="415.8" width="75" height="214.2" rx="6" fill="rgba(255,255,255,0.14)"/><rect x="376" y="415.8" width="85" height="214.2" rx="6" fill="rgba(255,255,255,0.14)"/><rect x="481" y="415.8" width="71" height="214.2" rx="6" fill="rgba(255,255,255,0.14)"/><rect x="572" y="415.8" width="73" height="214.2" rx="6" fill="rgba(255,255,255,0.14)"/>
-<text x="80" y="230" font-family="sans-serif" font-size="72" font-weight="800" fill="white">تاون هاوس القادسية</text>
-<text x="80" y="300" font-family="sans-serif" font-size="34" font-weight="600" fill="rgba(255,255,255,0.85)">فواصل المستقبل — بدأ البيع الآن</text>
-<rect x="78" y="340" width="220" height="4" fill="#C9A55C"/>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0A0F3D" />
+      <stop offset="100%" stop-color="#060920" />
+    </linearGradient>
+    <radialGradient id="glow" cx="72%" cy="18%" r="60%">
+      <stop offset="0%" stop-color="#F5B731" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#F5B731" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="goldText" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FFE9B0" />
+      <stop offset="100%" stop-color="#F5B731" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect width="1200" height="630" fill="url(#glow)" />
+  <g opacity="0.08" stroke="#F5B731" stroke-width="1">
+    <line x1="0" y1="120" x2="1200" y2="120" />
+    <line x1="0" y1="240" x2="1200" y2="240" />
+    <line x1="0" y1="360" x2="1200" y2="360" />
+    <line x1="0" y1="480" x2="1200" y2="480" />
+  </g>
 
+  <g transform="translate(90 200)">
+    <rect x="0" y="0" width="96" height="96" rx="26" fill="#0A0F3D" stroke="#F5B731" stroke-opacity="0.4" />
+    <path d="M14 38c9-1.5 15-7.5 21-13.5M21 34c12 4.5 33 4.5 45-3 4.5-2.25 9-1.5 12 1.5" stroke="#EEF2F7" stroke-width="3.4" fill="none" stroke-linecap="round" />
+    <g transform="translate(36 41) rotate(45)">
+      <path d="M-16.5 0a6 6 0 0 1 8.1-5.6L-3 0-5.6 2.6-11 -3A6 6 0 0 1-16.5 0Zm33 0a6 6 0 0 1-8.1 5.6L16.5 0l2.6-2.6L24.5 3A6 6 0 0 1 16.5 0Z" fill="#F5940A" />
+      <rect x="-13.5" y="-2.5" width="27" height="5" rx="2.5" fill="#F5940A" />
+    </g>
+    <circle cx="67.5" cy="67.5" r="12" fill="#F5940A" />
+    <circle cx="76.5" cy="67.5" r="12" fill="#C7CCD6" />
+  </g>
+
+  <text x="90" y="360" font-family="Arial, sans-serif" font-size="64" font-weight="800" fill="#FFFFFF">MY CAR <tspan fill="url(#goldText)">CARD</tspan></text>
+  <text x="90" y="410" font-family="Arial, sans-serif" font-size="26" fill="#EEF2F7" opacity="0.75">منظومة رقمية ذكية لخدمات السيارات في المملكة</text>
+
+  <g transform="translate(90 460)">
+    <rect width="10" height="10" rx="5" fill="#F5B731" />
+    <text x="24" y="10" font-family="Arial, sans-serif" font-size="20" fill="#EEF2F7" opacity="0.6">Saudi Automotive Technology Platform</text>
+  </g>
 </svg>

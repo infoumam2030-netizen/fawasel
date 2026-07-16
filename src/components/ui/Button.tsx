@@ -1,23 +1,19 @@
 "use client";
 
 import { forwardRef } from "react";
+import Link from "next/link";
 import { motion, type HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-type ButtonVariant = "primary" | "outline" | "ghost" | "gold" | "glass";
+type ButtonVariant = "gold" | "outline" | "ghost" | "navy" | "glass";
 type ButtonSize = "sm" | "md" | "lg";
 
-interface ButtonProps extends HTMLMotionProps<"button"> {
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-}
-
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  primary: "bg-primary text-white shadow-lg shadow-primary/30 hover:bg-hover",
-  outline: "border-2 border-white/70 text-white hover:bg-white/10",
-  ghost: "text-primary hover:bg-primary/10",
-  gold: "bg-gold text-dark shadow-lg shadow-gold/30 hover:brightness-105",
-  glass: "glass text-dark hover:bg-white/70",
+  gold: "bg-gold text-navy shadow-lg shadow-gold/25 hover:brightness-105",
+  outline: "border-2 border-white/25 text-white hover:border-gold/60 hover:text-gold",
+  ghost: "text-white/80 hover:text-gold",
+  navy: "bg-navy text-white shadow-lg shadow-navy/30 hover:bg-navy-soft",
+  glass: "glass text-white hover:border-gold/40",
 };
 
 const SIZE_CLASSES: Record<ButtonSize, string> = {
@@ -26,20 +22,23 @@ const SIZE_CLASSES: Record<ButtonSize, string> = {
   lg: "px-8 py-4 text-lg",
 };
 
+const BASE_CLASSES =
+  "inline-flex items-center justify-center gap-2 rounded-full font-bold transition-colors focus-visible:outline-none";
+
+interface ButtonProps extends HTMLMotionProps<"button"> {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+}
+
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "primary", size = "md", children, ...props }, ref) => {
+  ({ className, variant = "gold", size = "md", children, ...props }, ref) => {
     return (
       <motion.button
         ref={ref}
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.97 }}
         transition={{ type: "spring", stiffness: 400, damping: 22 }}
-        className={cn(
-          "inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-colors focus-visible:outline-none",
-          VARIANT_CLASSES[variant],
-          SIZE_CLASSES[size],
-          className
-        )}
+        className={cn(BASE_CLASSES, VARIANT_CLASSES[variant], SIZE_CLASSES[size], className)}
         {...props}
       >
         {children}
@@ -49,3 +48,29 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 Button.displayName = "Button";
+
+const MotionLink = motion.create(Link);
+
+interface LinkButtonProps {
+  href: string;
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  className?: string;
+  children: React.ReactNode;
+  onClick?: () => void;
+}
+
+export function LinkButton({ href, variant = "gold", size = "md", className, children, onClick }: LinkButtonProps) {
+  return (
+    <MotionLink
+      href={href}
+      onClick={onClick}
+      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.97 }}
+      transition={{ type: "spring", stiffness: 400, damping: 22 }}
+      className={cn(BASE_CLASSES, VARIANT_CLASSES[variant], SIZE_CLASSES[size], className)}
+    >
+      {children}
+    </MotionLink>
+  );
+}

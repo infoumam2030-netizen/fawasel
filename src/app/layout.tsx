@@ -1,18 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Cairo, IBM_Plex_Sans_Arabic, Plus_Jakarta_Sans } from "next/font/google";
+import { IBM_Plex_Sans_Arabic, Plus_Jakarta_Sans } from "next/font/google";
 import { siteConfig } from "@/config/site.config";
+import { SmoothScrollProvider } from "@/components/layout/SmoothScrollProvider";
 import { Preloader } from "@/components/sections/Preloader";
 import { Navbar } from "@/components/layout/Navbar";
 import "./globals.css";
 
-const headingFont = Cairo({
-  variable: "--font-heading-ar",
-  subsets: ["arabic", "latin"],
-  weight: ["600", "700", "800", "900"],
-  display: "swap",
-});
-
-const bodyFont = IBM_Plex_Sans_Arabic({
+const arabicFont = IBM_Plex_Sans_Arabic({
   variable: "--font-body-ar",
   subsets: ["arabic", "latin"],
   weight: ["300", "400", "500", "600", "700"],
@@ -22,20 +16,21 @@ const bodyFont = IBM_Plex_Sans_Arabic({
 const enFont = Plus_Jakarta_Sans({
   variable: "--font-en",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: siteConfig.colors.primary,
+  themeColor: siteConfig.colors.navy,
 };
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.seo.siteUrl),
   title: {
     default: siteConfig.seo.title,
-    template: `%s | ${siteConfig.projectName}`,
+    template: `%s | ${siteConfig.companyNameEn}`,
   },
   description: siteConfig.seo.description,
   keywords: siteConfig.seo.keywords,
@@ -46,8 +41,8 @@ export const metadata: Metadata = {
     url: siteConfig.seo.siteUrl,
     title: siteConfig.seo.title,
     description: siteConfig.seo.description,
-    siteName: siteConfig.projectName,
-    images: [{ url: siteConfig.seo.ogImage, width: 1200, height: 630, alt: siteConfig.projectName }],
+    siteName: siteConfig.companyNameEn,
+    images: [{ url: siteConfig.seo.ogImage, width: 1200, height: 630, alt: siteConfig.companyNameEn }],
   },
   twitter: {
     card: "summary_large_image",
@@ -56,30 +51,25 @@ export const metadata: Metadata = {
     images: [siteConfig.seo.ogImage],
   },
   robots: { index: true, follow: true },
-  icons: { icon: "/favicon.ico" },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "RealEstateListing",
-  name: siteConfig.projectName,
+  "@type": "Organization",
+  name: siteConfig.companyNameEn,
+  alternateName: siteConfig.companyName,
   description: siteConfig.seo.description,
   url: siteConfig.seo.siteUrl,
+  logo: siteConfig.seo.ogImage,
   image: siteConfig.seo.ogImage,
   address: {
     "@type": "PostalAddress",
     addressLocality: "الرياض",
     addressCountry: "SA",
-    streetAddress: siteConfig.address,
   },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: siteConfig.coordinates.lat,
-    longitude: siteConfig.coordinates.lng,
-  },
-  developer: { "@type": "Organization", name: siteConfig.developerName },
-  seller: { "@type": "Organization", name: siteConfig.exclusiveMarketerName },
+  email: siteConfig.email,
   telephone: siteConfig.phoneNumber,
+  sameAs: siteConfig.socialLinks.filter((link) => link.url !== "#").map((link) => link.url),
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -87,7 +77,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html
       lang="ar"
       dir="rtl"
-      className={`${headingFont.variable} ${bodyFont.variable} ${enFont.variable} h-full antialiased`}
+      className={`${arabicFont.variable} ${enFont.variable} h-full antialiased`}
     >
       <head>
         <script
@@ -95,10 +85,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-bg text-text">
-        <Preloader />
-        <Navbar />
-        {children}
+      <body className="min-h-full flex flex-col bg-navy text-white">
+        <SmoothScrollProvider>
+          <Preloader />
+          <Navbar />
+          {children}
+        </SmoothScrollProvider>
       </body>
     </html>
   );

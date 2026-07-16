@@ -10,7 +10,7 @@ interface SectionHeadingProps {
   description?: string;
   align?: "center" | "start";
   className?: string;
-  light?: boolean;
+  dark?: boolean;
 }
 
 export function SectionHeading({
@@ -19,7 +19,7 @@ export function SectionHeading({
   description,
   align = "center",
   className,
-  light = false,
+  dark = false,
 }: SectionHeadingProps) {
   return (
     <motion.div
@@ -37,9 +37,7 @@ export function SectionHeading({
         <span
           className={cn(
             "inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-semibold tracking-wide",
-            light
-              ? "border-white/25 bg-white/10 text-white"
-              : "border-primary/20 bg-primary/5 text-primary"
+            dark ? "border-navy/15 bg-navy/5 text-navy" : "border-gold/30 bg-gold/10 text-gold"
           )}
         >
           <span className="h-1.5 w-1.5 rounded-full bg-gold" />
@@ -49,7 +47,7 @@ export function SectionHeading({
       <h2
         className={cn(
           "font-heading text-3xl font-extrabold leading-tight sm:text-4xl md:text-5xl",
-          light ? "text-white" : "text-dark"
+          dark ? "text-navy" : "text-white"
         )}
       >
         {title}
@@ -58,7 +56,7 @@ export function SectionHeading({
         <p
           className={cn(
             "max-w-2xl text-base leading-relaxed sm:text-lg",
-            light ? "text-white/75" : "text-text/70"
+            dark ? "text-navy/70" : "text-white/65"
           )}
         >
           {description}

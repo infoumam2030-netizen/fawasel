@@ -5,16 +5,9 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { siteConfig } from "@/config/site.config";
-import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
+import { Logo } from "@/components/ui/Logo";
+import { LinkButton } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
-
-const NAV_LINKS = [
-  { href: "#about", label: "عن المشروع" },
-  { href: "#units", label: "الوحدات" },
-  { href: "#floor-plans", label: "المخططات" },
-  { href: "#warranty", label: "الضمانات" },
-  { href: "#location", label: "الموقع" },
-];
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -33,29 +26,20 @@ export function Navbar() {
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        isScrolled ? "glass py-3 shadow-lg shadow-primary/5" : "bg-transparent py-5"
+        isScrolled ? "glass-navy py-3 shadow-lg shadow-navy-deep/30" : "bg-transparent py-5"
       )}
     >
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-10">
-        <Link
-          href="#hero"
-          className={cn(
-            "font-heading text-lg font-extrabold transition-colors sm:text-xl",
-            isScrolled ? "text-dark" : "text-white"
-          )}
-        >
-          {siteConfig.projectName}
+        <Link href="#hero" aria-label={siteConfig.companyNameEn}>
+          <Logo />
         </Link>
 
-        <nav className="hidden items-center gap-8 lg:flex">
-          {NAV_LINKS.map((link) => (
+        <nav className="hidden items-center gap-7 lg:flex">
+          {siteConfig.nav.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={cn(
-                "text-sm font-semibold transition-colors hover:text-gold",
-                isScrolled ? "text-dark/80" : "text-white/90"
-              )}
+              className="text-sm font-semibold text-white/80 transition-colors hover:text-gold"
             >
               {link.label}
             </Link>
@@ -63,13 +47,15 @@ export function Navbar() {
         </nav>
 
         <div className="hidden lg:block">
-          <WhatsAppButton size="sm" />
+          <LinkButton href="#final-cta" variant="gold" size="sm">
+            كن شريكاً
+          </LinkButton>
         </div>
 
         <button
           onClick={() => setIsMenuOpen(true)}
           aria-label="فتح القائمة"
-          className={cn("lg:hidden", isScrolled ? "text-dark" : "text-white")}
+          className="text-white lg:hidden"
         >
           <Menu className="h-6 w-6" />
         </button>
@@ -81,7 +67,7 @@ export function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-dark/95 backdrop-blur-lg lg:hidden"
+            className="fixed inset-0 z-[60] bg-navy-deep/98 backdrop-blur-lg lg:hidden"
           >
             <div className="flex justify-end p-6">
               <button onClick={() => setIsMenuOpen(false)} aria-label="إغلاق القائمة" className="text-white">
@@ -89,7 +75,7 @@ export function Navbar() {
               </button>
             </div>
             <nav className="flex flex-col items-center gap-8 pt-10">
-              {NAV_LINKS.map((link) => (
+              {siteConfig.nav.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -99,7 +85,9 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <WhatsAppButton size="lg" className="mt-4" />
+              <LinkButton href="#final-cta" variant="gold" size="lg" className="mt-4" onClick={() => setIsMenuOpen(false)}>
+                كن شريكاً
+              </LinkButton>
             </nav>
           </motion.div>
         )}

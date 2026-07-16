@@ -45,7 +45,7 @@ export function CircularProgress({ percent, size = 160, strokeWidth = 12, label 
           stroke="currentColor"
           strokeWidth={strokeWidth}
           fill="none"
-          className="text-primary/10"
+          className="text-white/10"
         />
         <motion.circle
           cx={size / 2}
@@ -62,14 +62,14 @@ export function CircularProgress({ percent, size = 160, strokeWidth = 12, label 
         />
         <defs>
           <linearGradient id="circularProgressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#6B4FA1" />
-            <stop offset="100%" stopColor="#C9A55C" />
+            <stop offset="0%" stopColor="#F5B731" />
+            <stop offset="100%" stopColor="#FFD772" />
           </linearGradient>
         </defs>
       </svg>
       <div className="absolute flex flex-col items-center justify-center text-center">
-        <span className="font-heading text-3xl font-extrabold text-primary">{Math.round(displayPercent)}%</span>
-        {label && <span className="mt-1 text-xs text-text/60">{label}</span>}
+        <span className="font-heading text-3xl font-extrabold text-gold">{Math.round(displayPercent)}%</span>
+        {label && <span className="mt-1 text-xs text-white/60">{label}</span>}
       </div>
     </div>
   );

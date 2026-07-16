@@ -1,36 +1,13 @@
-export interface LandmarkItem {
-  id: string;
-  name: string;
-  duration: string;
-  category: "mall" | "road" | "hospital" | "school" | "park" | "landmark" | "government" | "transit";
-}
-
-export interface WarrantyItem {
-  id: string;
-  years: number;
-  label: string;
-  description: string;
-  icon: string;
-}
-
-export interface FloorPlan {
-  id: string;
-  name: string;
-  image: string;
-  features: string[];
-}
-
-export interface GalleryImage {
-  id: string;
-  src: string;
-  alt: string;
-}
-
 export interface SocialLink {
   id: string;
   label: string;
   url: string;
-  icon: "instagram" | "twitter" | "snapchat" | "tiktok" | "linkedin";
+  icon: "instagram" | "twitter" | "tiktok" | "linkedin";
+}
+
+export interface NavLink {
+  href: string;
+  label: string;
 }
 
 export interface QuickStat {
@@ -39,30 +16,121 @@ export interface QuickStat {
   value: number;
   suffix?: string;
   prefix?: string;
+  decimals?: number;
+}
+
+export interface TimelineItem {
+  id: string;
+  year: string;
+  title: string;
+  description: string;
+}
+
+export interface CoreValue {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+}
+
+export interface ChallengeItem {
+  id: string;
+  problem: string;
+  problemDescription: string;
+  solution: string;
+  solutionDescription: string;
+  icon: string;
+}
+
+export interface EcosystemNode {
+  id: string;
+  label: string;
+  icon: string;
+  angle: number;
+}
+
+export interface SolutionItem {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  metric?: string;
+  metricLabel?: string;
+}
+
+export interface TechFeature {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+}
+
+export interface IndustryItem {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+}
+
+export interface AppFeature {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+}
+
+export interface DashboardMetric {
+  id: string;
+  label: string;
+  value: number;
+  suffix?: string;
+  prefix?: string;
+  trend: string;
+  icon: string;
+}
+
+export interface JourneyStep {
+  id: string;
+  step: number;
+  title: string;
+  description: string;
+  icon: string;
+}
+
+export interface Testimonial {
+  id: string;
+  name: string;
+  role: string;
+  business: string;
+  quote: string;
+  avatarInitial: string;
+}
+
+export interface FaqItem {
+  id: string;
+  question: string;
+  answer: string;
 }
 
 export interface SiteConfig {
-  projectName: string;
-  projectTagline: string;
-  developerName: string;
-  exclusiveMarketerName: string;
+  companyName: string;
+  companyNameEn: string;
+  tagline: string;
   language: "ar" | "en";
   direction: "rtl" | "ltr";
-  whatsappNumber: string;
+
   phoneNumber: string;
-  googleMapsUrl: string;
-  googleMapsEmbedUrl: string;
-  coordinates: { lat: number; lng: number };
+  email: string;
   address: string;
+
   colors: {
-    primary: string;
-    accent: string;
-    hover: string;
-    background: string;
-    dark: string;
+    navy: string;
+    navyDeep: string;
     gold: string;
-    text: string;
+    white: string;
+    softGray: string;
   };
+
   seo: {
     title: string;
     description: string;
@@ -70,25 +138,106 @@ export interface SiteConfig {
     siteUrl: string;
     ogImage: string;
   };
+
+  nav: NavLink[];
+
   hero: {
-    videoSrc: string;
-    posterImage: string;
+    eyebrow: string;
     title: string;
+    highlight: string;
     subtitle: string;
     ctaPrimary: string;
     ctaSecondary: string;
+    scrollLabel: string;
   };
-  about: {
+
+  story: {
+    eyebrow: string;
     title: string;
     description: string;
-    highlights: string[];
+    mission: string;
+    vision: string;
+    timeline: TimelineItem[];
+    values: CoreValue[];
   };
+
+  challenges: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    items: ChallengeItem[];
+  };
+
+  ecosystem: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    center: string;
+    nodes: EcosystemNode[];
+  };
+
+  solutions: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    items: SolutionItem[];
+  };
+
+  technology: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    features: TechFeature[];
+  };
+
+  industries: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    items: IndustryItem[];
+  };
+
+  mobileApp: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    features: AppFeature[];
+  };
+
+  dashboard: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    metrics: DashboardMetric[];
+  };
+
+  partnerJourney: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    steps: JourneyStep[];
+  };
+
+  testimonials: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    items: Testimonial[];
+  };
+
+  faq: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    items: FaqItem[];
+  };
+
+  finalCta: {
+    title: string;
+    description: string;
+    ctaLabel: string;
+  };
+
   quickStats: QuickStat[];
-  gallery: GalleryImage[];
-  floorPlans: FloorPlan[];
-  warrantyItems: WarrantyItem[];
-  landmarks: LandmarkItem[];
   socialLinks: SocialLink[];
-  googleSheetId: string;
-  googleSheetRange: string;
 }
