@@ -52,17 +52,19 @@ export function DeveloperMarketer() {
           {PARTIES.map((party) => (
             <motion.div key={party.id} variants={fadeUp}>
               <GlassCard dark className="flex h-full flex-col gap-6 p-8">
-                <div className="flex items-center gap-4">
-                  <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gold/15 text-gold">
-                    <party.icon className="h-7 w-7" />
-                  </span>
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-widest text-gold">{party.role}</p>
-                    <h3 className="font-heading text-2xl font-bold text-white">{party.name}</h3>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-center gap-4">
+                    <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gold/15 text-gold">
+                      <party.icon className="h-7 w-7" />
+                    </span>
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-widest text-gold">{party.role}</p>
+                      <h3 className="font-heading text-2xl font-bold text-white">{party.name}</h3>
+                    </div>
                   </div>
-                </div>
-                <div className="relative h-16 w-40">
-                  <Image src={party.logo} alt={party.name} fill sizes="160px" className="object-contain object-right" />
+                  <div className="relative h-14 w-28 shrink-0">
+                    <Image src={party.logo} alt={party.name} fill sizes="112px" className="object-contain" />
+                  </div>
                 </div>
                 <p className="text-white/70 leading-relaxed">{party.description}</p>
               </GlassCard>
