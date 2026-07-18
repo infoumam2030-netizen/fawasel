@@ -77,9 +77,22 @@ function generateFallbackUnits(): Unit[] {
 }
 
 export async function getUnits(): Promise<Unit[]> {
-  const rows = await fetchSheetRows();
+  let rows: SheetRow[] | null;
+
+  try {
+    rows = await fetchSheetRows();
+  } catch (error) {
+    // Credentials were configured but the live Google Sheets call failed
+    // (bad auth, revoked share, invalid sheet ID, network error, etc).
+    // Never let this crash the app or the page — degrade to an empty list
+    // so the UI shows its existing "no units" empty state instead.
+    console.error("[services/units] Google Sheets request failed:", error);
+    return [];
+  }
 
   if (!rows) {
+    // Credentials are not configured at all (local/demo environment) —
+    // fall back to built-in sample data so the site stays fully usable.
     return generateFallbackUnits();
   }
 

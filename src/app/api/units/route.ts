@@ -7,7 +7,13 @@ export async function GET() {
     return NextResponse.json(units, {
       headers: { "Cache-Control": "no-store" },
     });
-  } catch {
-    return NextResponse.json({ error: "تعذر تحميل بيانات الوحدات" }, { status: 500 });
+  } catch (error) {
+    // getUnits() already handles Google Sheets failures internally and
+    // resolves to [] — this catch is a last-resort safety net so the
+    // route itself can never crash or return a 500 to the client.
+    console.error("[api/units] unexpected error:", error);
+    return NextResponse.json([], {
+      headers: { "Cache-Control": "no-store" },
+    });
   }
 }
