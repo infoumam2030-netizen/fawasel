@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { BedDouble, Bath, Car, Ruler } from "lucide-react";
 import type { Unit } from "@/types/unit";
 import { StatusBadge } from "@/components/ui/Badge";
+import { SmartImage } from "@/components/ui/SmartImage";
 import { formatPrice } from "@/lib/utils";
 
 interface UnitCardProps {
@@ -26,7 +26,7 @@ export function UnitCard({ unit, onDetails }: UnitCardProps) {
       className="glass group flex flex-col overflow-hidden rounded-3xl shadow-lg shadow-primary/5"
     >
       <div className="relative aspect-[4/3] overflow-hidden">
-        <Image
+        <SmartImage
           src={unit.image}
           alt={`وحدة ${unit.id}`}
           fill

@@ -154,6 +154,11 @@ export const siteConfig: SiteConfig = {
     { id: "tiktok", label: "تيك توك", url: "#", icon: "tiktok" },
   ],
 
-  googleSheetId: process.env.GOOGLE_SHEET_ID ?? "",
+  // Defaults to the project's live sheet so the site works out of the box;
+  // GOOGLE_SHEET_ID still overrides this for other deployments/environments.
+  // The sheet is shared as "Anyone with the link can view", which is what
+  // lets the site read it without any Service Account setup — see
+  // src/services/googleSheets.ts.
+  googleSheetId: process.env.GOOGLE_SHEET_ID || "1sy-Uy9Chn2I8VxBDuUSsPj63rPwhrg74NczepwEGmrk",
   googleSheetRange: process.env.GOOGLE_SHEET_RANGE ?? "Units!A2:J100",
 };

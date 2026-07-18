@@ -17,9 +17,20 @@ function normalizeStatus(raw: string | undefined): UnitStatus {
   return STATUS_MAP[raw.trim().toLowerCase()] ?? STATUS_MAP[raw.trim()] ?? "available";
 }
 
+/**
+ * Extracts a number from a raw cell value that may carry formatting —
+ * thousands separators ("1,330,000") and/or a trailing currency label
+ * ("1,330,000 ر.س.") as produced by Google Sheets' formatted CSV/API
+ * export. Only the leading digit/comma run (with an optional decimal
+ * part directly attached, e.g. "215.5") is treated as the number; any
+ * trailing text after a space (like the currency label) is ignored
+ * rather than corrupting the parse.
+ */
 function toNumber(raw: string | undefined, fallback = 0): number {
   if (!raw) return fallback;
-  const parsed = Number(raw.replace(/[^\d.]/g, ""));
+  const match = raw.match(/[\d,]+(?:\.\d+)?/);
+  if (!match) return fallback;
+  const parsed = Number(match[0].replace(/,/g, ""));
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 

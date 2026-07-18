@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { BedDouble, Bath, Car, Ruler, Sun, FileText } from "lucide-react";
 import type { Unit } from "@/types/unit";
 import { Modal } from "@/components/ui/Modal";
 import { StatusBadge } from "@/components/ui/Badge";
+import { SmartImage } from "@/components/ui/SmartImage";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { siteConfig } from "@/config/site.config";
 import { formatPrice } from "@/lib/utils";
@@ -29,7 +29,7 @@ export function UnitDetailsModal({ unit, onClose }: UnitDetailsModalProps) {
     <Modal isOpen={!!unit} onClose={onClose} title={`تفاصيل وحدة ${unit.id}`}>
       <div className="flex flex-col gap-6">
         <div className="relative aspect-video overflow-hidden rounded-2xl">
-          <Image src={unit.image} alt={`وحدة ${unit.id}`} fill className="object-cover" />
+          <SmartImage src={unit.image} alt={`وحدة ${unit.id}`} fill className="object-cover" />
           <div className="absolute right-4 top-4">
             <StatusBadge status={unit.status} />
           </div>
