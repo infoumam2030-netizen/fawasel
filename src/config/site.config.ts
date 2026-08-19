@@ -1,164 +1,197 @@
 import type { SiteConfig } from "@/types/config";
 
 /**
- * Central configuration for the entire site.
- * To reuse this template for a different real-estate project, only this
- * file (plus /public media assets and .env values) needs to change —
- * no component or page should ever hardcode project-specific content.
+ * Central configuration for the entire site. To reuse this architecture for
+ * a different residential project, only this file (plus /public media and
+ * .env values) needs to change — no component should ever hardcode
+ * project-specific content.
  */
 export const siteConfig: SiteConfig = {
-  projectName: "تاون هاوس القادسية",
-  projectTagline: "ميني كومباوند خاص شمال شرق الرياض",
-  developerName: "فواصل المستقبل",
-  exclusiveMarketerName: "أمم العقارية",
+  projectName: "طيبة 109",
+  projectStatus: "تحت الإنشاء",
+  projectType: "مشروع سكني",
+  projectDescription:
+    "مشروع سكني يضم وحدات سكنية متنوعة تشمل شققًا ودوبلكسات بمساحات وتصاميم مختلفة.",
+  unitsCount: 14,
   language: "ar",
   direction: "rtl",
 
-  whatsappNumber: "+966556278284",
-  phoneNumber: "+966556278284",
-  googleMapsUrl: "https://maps.app.goo.gl/q8jxefQBTWEWtmMz8?g_st=ic",
-  googleMapsEmbedUrl:
-    "https://www.google.com/maps?q=24.8076,46.8257&hl=ar&z=15&output=embed",
-  coordinates: { lat: 24.8076, lng: 46.8257 },
-  address: "شمال شرق الرياض، بين أحياء القادسية وإشبيلية والرماية",
-
   colors: {
-    primary: "#6B4FA1",
-    accent: "#7C5BCB",
-    hover: "#9370DB",
-    background: "#F8F6FC",
-    dark: "#111111",
-    gold: "#C9A55C",
-    text: "#2A2A2A",
+    navy: "#071A2B",
+    deepNavy: "#04111D",
+    luxuryNavy: "#0B2238",
+    gold: "#C9A45C",
+    darkGold: "#9E7835",
+    lightGold: "#E2CC9B",
+    background: "#F8F6F0",
+    white: "#FFFFFF",
+    text: "#151A1F",
+    muted: "#66707A",
+    border: "#DED8CC",
+  },
+
+  // Not provided yet — intentionally left empty rather than invented.
+  contact: {
+    whatsapp: "",
+    phone: "",
+  },
+
+  location: {
+    googleMapsUrl: "",
+    googleMapsEmbedUrl: "",
+    coordinates: { lat: null, lng: null },
+    landmarks: [
+      { id: "taiba-park", name: "حديقة طيبة", distance: "800 متر" },
+      { id: "khurais-road", name: "طريق الخرج", distance: "2.8 كم" },
+      { id: "aljeel-schools", name: "مدارس الجيل العالمية", distance: "3 كم" },
+      { id: "rabiah-hospital", name: "مستشفى رابية", distance: "3.5 كم" },
+      { id: "arafat-road", name: "طريق عرفات", distance: "4 كم" },
+      { id: "khurais-housing", name: "إسكان طريق الخرج", distance: "4 كم" },
+      { id: "dar-albaida-exit", name: "مخرج الدار البيضاء", distance: "5 كم" },
+      { id: "aziziyah-exit", name: "مخرج العزيزية", distance: "15 كم" },
+    ],
+    districts: [
+      { id: "dar-albaida", name: "حي الدار البيضاء", distance: "8 كم" },
+      { id: "alshifa", name: "حي الشفا", distance: "21 كم" },
+      { id: "alsuli", name: "حي السلي", distance: "25 كم" },
+    ],
+  },
+
+  streetWidths: [
+    { id: "residential", value: "15 / 18م", label: "شوارع الأراضي السكنية" },
+    { id: "residential-commercial", value: "30 / 36م", label: "شوارع الأراضي السكنية التجارية" },
+    { id: "commercial", value: "60م", label: "الشوارع التجارية" },
+  ],
+
+  facilities: [
+    { id: "health", label: "مرفق صحي", icon: "cross" },
+    { id: "police", label: "مركز شرطة", icon: "shield" },
+    { id: "park", label: "حديقة", icon: "trees" },
+    { id: "education", label: "مجمع تعليمي", icon: "graduation-cap" },
+    { id: "civil-defense", label: "دفاع مدني", icon: "flame" },
+  ],
+
+  infrastructure: [
+    { id: "sewage", label: "شبكة صرف صحي", icon: "waves" },
+    { id: "water", label: "شبكة مياه", icon: "droplet" },
+    { id: "electricity", label: "شبكة كهرباء", icon: "zap" },
+    { id: "telephone", label: "شبكة هاتف", icon: "phone" },
+    { id: "lighting", label: "إنارة", icon: "lamp" },
+    { id: "drainage", label: "تصريف سيول", icon: "cloud-rain" },
+  ],
+
+  warranties: [
+    { id: "electrical", years: 2, label: "ضمان أعمال الكهرباء" },
+    { id: "plumbing", years: 2, label: "ضمان أعمال السباكة" },
+    { id: "cooperative-insurance", years: 10, label: "تأمين تعاوني" },
+  ],
+
+  // Not provided yet — the UI must never fabricate a percentage.
+  constructionProgress: null,
+
+  nav: [
+    { href: "#hero", label: "الرئيسية" },
+    { href: "#editorial", label: "عن المشروع" },
+    { href: "#units", label: "الوحدات" },
+    { href: "#location", label: "الموقع" },
+    { href: "#warranties", label: "الضمانات" },
+  ],
+
+  hero: {
+    eyebrow: "مشروع سكني تحت الإنشاء",
+    title: "طيبة 109",
+    supportingStatement: ["سكن يجمع الخصوصية،", "المساحة، والموقع."],
+    unitsLine: "14 وحدة سكنية بتصاميم متنوعة",
+    pricingHighlight: "تبدأ من 300,000 ريال",
+    ctaPrimary: "استكشف الوحدات",
+    ctaSecondary: "تواصل معنا",
+    image: "/images/hero/hero.svg",
+  },
+
+  editorialIntro: {
+    number: "01",
+    title: ["أكثر من وحدة سكنية.", "مساحة لحياة كاملة."],
+    description:
+      "مشروع سكني تحت الإنشاء يضم 14 وحدة سكنية بتصاميم متنوعة، توفر مساحات عملية وخصوصية عالية، مع خدمات وبنية تحتية متكاملة ومرافق متنوعة داخل المخطط، إضافة إلى قربه من الطرق الرئيسية والخدمات الحيوية.",
+  },
+
+  projectNumbers: [
+    { id: "units", value: 14, label: "وحدة سكنية" },
+    { id: "starting-price", value: 300, suffix: "K", label: "ريال — تبدأ الأسعار" },
+    { id: "duplex-area", value: 250, suffix: "م²", label: "مساحة الدوبلكس" },
+    { id: "roof-area", value: 150, suffix: "م²", label: "مساحات الأسطح تصل إلى" },
+    { id: "insurance-years", value: 10, label: "سنوات تأمين تعاوني" },
+  ],
+
+  unitTypes: {
+    apartment: {
+      label: "الشقق",
+      startingPrice: 300_000,
+      area: null,
+      features: [
+        "مدخل خاص ومستقل",
+        "مجلس رجال مستقل",
+        "دورة مياه للمجلس",
+        "صالة معيشة واسعة",
+        "مطبخ",
+        "غرفة ماستر مع دورة مياه خاصة",
+        "سطح مستقل لبعض الوحدات",
+      ],
+      highlight: "أسطح تصل إلى 150م²",
+      floorPlans: [
+        {
+          id: "apartment-layout",
+          label: "مخطط الشقة",
+          image: "/images/floor-plans/apartment.svg",
+          features: ["مجلس رجال", "صالة معيشة", "مطبخ", "2 غرفة نوم", "2 دورة مياه", "سطح مستقل"],
+        },
+      ],
+    },
+    duplex: {
+      label: "الدوبلكسات",
+      startingPrice: 700_000,
+      area: 250,
+      features: ["دورين", "ملحق خارجي", "مجلس رجال", "مقلط رجال", "صالة معيشة", "مطبخ", "3 غرف ماستر", "دورات مياه خاصة"],
+      highlight: "250م² على دورين",
+      floorPlans: [
+        {
+          id: "first",
+          label: "الدور الأول",
+          image: "/images/floor-plans/duplex-first.svg",
+          features: ["ملحق خارجي", "مجلس رجال", "مقلط رجال", "صالة معيشة واسعة", "مطبخ", "غرفة ماستر", "دورة مياه خاصة", "دورة مياه إضافية"],
+        },
+        {
+          id: "second",
+          label: "الدور الثاني",
+          image: "/images/floor-plans/duplex-second.svg",
+          features: ["2 غرفة نوم ماستر", "دورات مياه خاصة", "دورة مياه إضافية", "صالة معيشة"],
+        },
+      ],
+    },
+  },
+
+  privacy: {
+    title: ["الخصوصية ليست تفصيلًا.", "إنها جزء من التصميم."],
+    highlights: ["مدخل خاص ومستقل", "مجلس رجال مستقل", "أسطح مستقلة لبعض الوحدات"],
+    image: "/images/gallery/privacy.svg",
+  },
+
+  marketing: {
+    mainMessage: "طيبة 109 — سكن يجمع الخصوصية، المساحة، والموقع",
+    supportingMessage:
+      "مشروع سكني تحت الإنشاء يضم 14 وحدة سكنية بتصاميم متنوعة، توفر مساحات عملية وخصوصية عالية، مع خدمات وبنية تحتية متكاملة ومرافق متنوعة داخل المخطط، إضافة إلى قربه من الطرق الرئيسية والخدمات الحيوية.",
+    pricingMessage: "خيارات سكنية تبدأ من 300,000 ريال، مع وحدات دوبلكس بمساحات تصل إلى 250م².",
   },
 
   seo: {
-    title: "تاون هاوس القادسية | فواصل المستقبل — بدأ البيع الآن",
+    title: "طيبة 109 | سكن يجمع الخصوصية، المساحة، والموقع",
     description:
-      "تاون هاوس القادسية من فواصل المستقبل — ميني كومباوند خاص من 18 وحدة فاخرة شمال شرق الرياض، بمساحات تبدأ من 210م وسطحين خاصين وموقفين بالقبو. تسليم فوري وأسعار تبدأ من 1,330,000 ريال.",
-    keywords: [
-      "تاون هاوس القادسية",
-      "فواصل المستقبل",
-      "تاون هاوس الرياض",
-      "عقارات الرياض",
-      "ميني كومباوند",
-      "أمم العقارية",
-      "تاون هاوس شمال الرياض",
-    ],
-    siteUrl: "https://fawaseel-alqadisiyah.sa",
-    ogImage: "/images/og-image.svg",
+      "مشروع سكني تحت الإنشاء يضم 14 وحدة سكنية بتصاميم متنوعة، توفر مساحات عملية وخصوصية عالية، مع خدمات وبنية تحتية متكاملة ومرافق متنوعة داخل المخطط، إضافة إلى قربه من الطرق الرئيسية والخدمات الحيوية.",
+    keywords: ["طيبة 109", "مشروع سكني الرياض", "شقق للبيع الرياض", "دوبلكس للبيع الرياض", "عقارات سكنية الرياض"],
+    siteUrl: "https://taiba109.sa",
+    ogImage: "/images/og/og-image.svg",
   },
 
-  hero: {
-    videoSrc: "/videos/hero-drone.mp4",
-    posterImage: "/images/hero-poster.svg",
-    title: "تاون هاوس القادسية",
-    subtitle: "بدأ البيع الآن",
-    ctaPrimary: "استفسر الآن",
-    ctaSecondary: "تصفح الوحدات",
-  },
-
-  about: {
-    title: "فواصل المستقبل — ميني كومباوند خاص بخصوصية استثنائية",
-    description:
-      "مشروع تاون هاوس القادسية ميني كومباوند خاص مكوّن من 18 وحدة تاون هاوس بتصميم موحّد داخل كومباوند خاص يوفّر مستوى أمان وخصوصية أعلى من المشاريع المفتوحة. كل وحدة مكوّنة من 3 طوابق مع قبو خاص بموقفين للسيارات، وتتميّز بسطحين منفصلين ومساحات خضراء داخلية ومشتركة، مع سكاي لايت في كل وحدة يضمن إضاءة وتهوية طبيعية مستمرة.",
-    highlights: [
-      "18 وحدة تاون هاوس فقط ضمن كومباوند خاص",
-      "3 طوابق + قبو خاص بموقفين لكل وحدة",
-      "سطحان منفصلان بمساحة 34م و18م",
-      "سكاي لايت لإضاءة وتهوية طبيعية دائمة",
-      "مساحات خضراء داخلية ومشتركة",
-      "تسليم فوري بدون انتظار",
-    ],
-  },
-
-  quickStats: [
-    { id: "units", label: "وحدة تاون هاوس", value: 18 },
-    { id: "floors", label: "طوابق لكل وحدة", value: 3 },
-    { id: "parking", label: "موقف سيارة بالقبو", value: 2 },
-    { id: "roofs", label: "سطح لكل وحدة", value: 2 },
-    { id: "area", label: "مساحة الوحدة", value: 210, suffix: "م+" },
-    { id: "delivery", label: "موعد التسليم", value: 0, prefix: "فوري" },
-  ],
-
-  gallery: [
-    { id: "g1", src: "/images/gallery/exterior-1.svg", alt: "الواجهة الخارجية لتاون هاوس القادسية" },
-    { id: "g2", src: "/images/gallery/exterior-2.svg", alt: "مدخل الكومباوند الخاص" },
-    { id: "g3", src: "/images/gallery/majlis.svg", alt: "المجلس بتشطيب مودرن فاخر" },
-    { id: "g4", src: "/images/gallery/living.svg", alt: "الصالة الرئيسية" },
-    { id: "g5", src: "/images/gallery/master.svg", alt: "غرفة الماستر مع الدريسنج" },
-    { id: "g6", src: "/images/gallery/rooftop.svg", alt: "السطح العلوي المفتوح" },
-    { id: "g7", src: "/images/gallery/skylight.svg", alt: "فتحة السكاي لايت الداخلية" },
-    { id: "g8", src: "/images/gallery/night.svg", alt: "إضاءة المشروع الليلية" },
-  ],
-
-  floorPlans: [
-    {
-      id: "ground",
-      name: "الدور الأرضي",
-      image: "/images/floor-plans/ground-floor.svg",
-      features: ["مجلس رجال مستقل", "صالة معيشة واسعة", "مطبخ مفتوح", "دورة مياه ضيوف", "موقفان بالقبو"],
-    },
-    {
-      id: "first",
-      name: "الدور الأول",
-      image: "/images/floor-plans/first-floor.svg",
-      features: ["4 غرف نوم", "غرفة ماستر مع دريسنج", "5 دورات مياه", "سكاي لايت مركزي"],
-    },
-    {
-      id: "penthouse",
-      name: "السطح العلوي",
-      image: "/images/floor-plans/penthouse.svg",
-      features: ["سطح أول بمساحة 34م", "سطح ثاني بمساحة 18م", "جلسة عائلية خارجية", "مساحة مفتوحة قابلة للتخصيص"],
-    },
-  ],
-
-  warrantyItems: [
-    { id: "green-pipes", years: 50, label: "المواسير الخضراء", description: "ضمان ممتد على شبكة المواسير الخضراء", icon: "pipette" },
-    { id: "electrical", years: 25, label: "الكهرباء", description: "ضمان شامل على التمديدات الكهربائية", icon: "zap" },
-    { id: "tanks", years: 15, label: "الخزانات", description: "ضمان على خزانات المياه", icon: "database" },
-    { id: "aluminium", years: 15, label: "الألمنيوم", description: "ضمان على أعمال الألمنيوم والنوافذ", icon: "layout-panel-top" },
-    { id: "hidden-defect", years: 10, label: "تأمين العيوب الخفية", description: "تأمين ضد العيوب الإنشائية الخفية", icon: "shield-check" },
-    { id: "insulation", years: 10, label: "العزل المائي والحراري", description: "ضمان على العزل المائي والحراري", icon: "thermometer" },
-    { id: "doors", years: 10, label: "الأبواب", description: "ضمان على جميع الأبواب الداخلية والخارجية", icon: "door-closed" },
-    { id: "elevator", years: 10, label: "المصعد", description: "ضمان على المصعد وتشغيله", icon: "arrow-up-down" },
-    { id: "smart-home", years: 10, label: "المنزل الذكي", description: "ضمان على أنظمة المنزل الذكي", icon: "smartphone" },
-    { id: "lighting", years: 5, label: "الإضاءة", description: "ضمان على وحدات الإضاءة", icon: "lightbulb" },
-    { id: "grohe", years: 5, label: "خلاطات GROHE", description: "ضمان على خلاطات ومستلزمات GROHE", icon: "droplets" },
-    { id: "general", years: 1, label: "الضمان العام", description: "ضمان عام شامل على جميع أعمال الوحدة", icon: "badge-check" },
-  ],
-
-  landmarks: [
-    { id: "imam-saud-road", name: "طريق الإمام سعود", duration: "دقيقة واحدة", category: "road" },
-    { id: "jaber-road", name: "طريق جابر", duration: "دقيقة واحدة", category: "road" },
-    { id: "admin-complex", name: "المجمع الإداري الحكومي", duration: "دقيقتان", category: "government" },
-    { id: "stadium", name: "استاد ومدينة الملك فهد الرياضية", duration: "3 دقائق", category: "landmark" },
-    { id: "northern-ring", name: "الدائري الشمالي", duration: "5 دقائق", category: "road" },
-    { id: "khurais-road", name: "طريق خريص", duration: "7 دقائق", category: "road" },
-    { id: "granada-mall", name: "غرناطة مول", duration: "13 دقيقة", category: "mall" },
-    { id: "nakheel-mall", name: "النخيل مول", duration: "15 دقيقة", category: "mall" },
-    { id: "imam-saud-university", name: "جامعة الإمام سعود", duration: "15 دقيقة", category: "school" },
-    { id: "kafd", name: "المدينة المالية (كافد)", duration: "20 دقيقة", category: "landmark" },
-    { id: "sar-train", name: "محطة قطار سار", duration: "20 دقيقة", category: "transit" },
-    { id: "family-care", name: "مستشفى Family Care", duration: "على بعد دقائق", category: "hospital" },
-    { id: "national-guard-hospital", name: "مستشفى الحرس الوطني", duration: "حي الرماية القريب", category: "hospital" },
-    { id: "schools", name: "مدارس أهلية ودولية", duration: "حي إشبيلية", category: "school" },
-    { id: "muhaizila-park", name: "حديقة المعيزلة", duration: "قريبة", category: "park" },
-    { id: "khaleej-park", name: "حديقة الخليج", duration: "قريبة", category: "park" },
-  ],
-
-  socialLinks: [
-    { id: "instagram", label: "إنستقرام", url: "#", icon: "instagram" },
-    { id: "twitter", label: "إكس", url: "#", icon: "twitter" },
-    { id: "snapchat", label: "سناب شات", url: "#", icon: "snapchat" },
-    { id: "tiktok", label: "تيك توك", url: "#", icon: "tiktok" },
-  ],
-
-  // Defaults to the project's live sheet so the site works out of the box;
-  // GOOGLE_SHEET_ID still overrides this for other deployments/environments.
-  // The sheet is shared as "Anyone with the link can view", which is what
-  // lets the site read it without any Service Account setup — see
-  // src/services/googleSheets.ts.
-  googleSheetId: process.env.GOOGLE_SHEET_ID || "1sy-Uy9Chn2I8VxBDuUSsPj63rPwhrg74NczepwEGmrk",
+  googleSheetId: process.env.GOOGLE_SHEET_ID ?? "",
   googleSheetRange: process.env.GOOGLE_SHEET_RANGE ?? "Units!A2:J100",
 };

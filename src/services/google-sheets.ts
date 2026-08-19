@@ -77,8 +77,8 @@ function parseCsv(text: string): string[][] {
 /**
  * Reads a sheet published as "Anyone with the link can view" via Google's
  * CSV export endpoint — no Service Account or API credentials needed.
- * This is the zero-setup path: just share the sheet with link access and
- * set GOOGLE_SHEET_ID (or the default in site.config.ts).
+ * This is the zero-setup path: share the sheet with link access and set
+ * GOOGLE_SHEET_ID.
  */
 async function fetchRowsFromPublicSheet(sheetId: string): Promise<SheetRow[]> {
   const sheetName = getSheetTabName();
@@ -97,7 +97,7 @@ async function fetchRowsFromPublicSheet(sheetId: string): Promise<SheetRow[]> {
   }
 
   const rows = parseCsv(text).filter((r) => r.some((cell) => cell.trim() !== ""));
-  // First row is the header row (Unit ID, Status, Area, ...) — drop it.
+  // First row is the header row — drop it.
   return rows.slice(1);
 }
 
@@ -132,7 +132,7 @@ async function fetchRowsWithServiceAccount(sheetId: string): Promise<SheetRow[]>
  *    (works for private sheets).
  * 2. Otherwise, if a sheet ID is configured -> public CSV export (the sheet
  *    must be shared as "Anyone with the link can view").
- * 3. Otherwise -> null, so callers fall back to built-in sample data.
+ * 3. Otherwise -> null, so callers fall back to built-in sample units.
  *
  * Throws if a sheet ID/credentials ARE configured but the live request
  * fails — callers (see services/units.ts) catch this and degrade to an

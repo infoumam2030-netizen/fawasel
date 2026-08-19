@@ -33,6 +33,26 @@ export const scaleIn: Variants = {
   },
 };
 
+/** Architectural clip-path reveal — used for large editorial imagery/blocks. */
+export const clipReveal: Variants = {
+  hidden: { clipPath: "inset(0 0 100% 0)", opacity: 0.4 },
+  visible: {
+    clipPath: "inset(0 0 0% 0)",
+    opacity: 1,
+    transition: { duration: 1.1, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+/** Slow, restrained fade-up for editorial titles/paragraphs. */
+export const fadeUpSlow: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 export const staggerContainer = (stagger = 0.12, delayChildren = 0): Variants => ({
   hidden: {},
   visible: {

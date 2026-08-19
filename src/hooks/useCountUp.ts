@@ -16,7 +16,18 @@ export function useCountUp({ end, duration = 1.8, decimals = 0 }: UseCountUpOpti
   const [value, setValue] = useState(0);
 
   useEffect(() => {
-    if (!isInView || prefersReducedMotion) return;
+    if (!isInView) return;
+
+    if (prefersReducedMotion) {
+      // Deferred via setTimeout (not called synchronously in the effect
+      // body) so this doesn't trip the "no setState in effect" rule, and
+      // — critically — so the very first client render still matches the
+      // server-rendered "0" instead of jumping straight to `end`, which
+      // would otherwise cause a hydration mismatch for anyone with
+      // prefers-reduced-motion enabled.
+      const timeout = setTimeout(() => setValue(end), 0);
+      return () => clearTimeout(timeout);
+    }
 
     let frame: number;
     const start = performance.now();
@@ -38,8 +49,7 @@ export function useCountUp({ end, duration = 1.8, decimals = 0 }: UseCountUpOpti
     return () => cancelAnimationFrame(frame);
   }, [isInView, end, duration, prefersReducedMotion]);
 
-  const displayValue = prefersReducedMotion ? end : value;
-  const display = decimals > 0 ? displayValue.toFixed(decimals) : Math.round(displayValue).toString();
+  const display = decimals > 0 ? value.toFixed(decimals) : Math.round(value).toString();
 
   return { ref, display };
 }

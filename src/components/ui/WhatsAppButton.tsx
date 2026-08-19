@@ -8,28 +8,31 @@ import { Button } from "@/components/ui/Button";
 interface WhatsAppButtonProps {
   message?: string;
   className?: string;
-  variant?: "primary" | "gold" | "glass" | "outline" | "ghost";
+  variant?: "gold" | "navy" | "outline" | "outline-light" | "ghost";
   size?: "sm" | "md" | "lg";
   label?: string;
 }
 
 export function WhatsAppButton({
-  message = "مرحبًا، أرغب بالاستفسار عن مشروع تاون هاوس القادسية",
+  message = `مرحبًا، أرغب بالاستفسار عن مشروع ${siteConfig.projectName}`,
   className,
   variant = "gold",
   size = "md",
   label = "تواصل عبر واتساب",
 }: WhatsAppButtonProps) {
-  const href = buildWhatsAppLink(siteConfig.whatsappNumber, message);
+  const isConfigured = Boolean(siteConfig.contact.whatsapp);
+  const href = isConfigured ? buildWhatsAppLink(siteConfig.contact.whatsapp, message) : undefined;
 
   return (
     <Button
       variant={variant}
       size={size}
-      className={cn(className)}
-      onClick={() => window.open(href, "_blank", "noopener,noreferrer")}
+      className={cn(!isConfigured && "cursor-not-allowed opacity-50", className)}
+      disabled={!isConfigured}
+      aria-disabled={!isConfigured}
+      onClick={() => href && window.open(href, "_blank", "noopener,noreferrer")}
     >
-      <MessageCircle className="h-5 w-5" aria-hidden="true" />
+      <MessageCircle className="h-4 w-4" aria-hidden="true" />
       {label}
     </Button>
   );

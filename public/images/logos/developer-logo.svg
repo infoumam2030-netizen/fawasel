@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="260" height="64" viewBox="0 0 260 64">
-<defs><linearGradient id="g_dev" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6B4FA1"/><stop offset="60%" stop-color="#7C5BCB"/></linearGradient></defs>
-<rect width="260" height="64" fill="none"/>
-<circle cx="32.0" cy="32.0" r="28.0" fill="url(#g_dev)"/>
-<text x="32.0" y="40.96" text-anchor="middle" font-family="sans-serif" font-size="27" font-weight="800" fill="white">ف</text>
-<text x="80" y="38.4" font-family="sans-serif" font-size="22" font-weight="700" fill="#6B4FA1">فواصل المستقبل</text>
-</svg>

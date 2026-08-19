@@ -4,7 +4,7 @@ import { forwardRef } from "react";
 import { motion, type HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-type ButtonVariant = "primary" | "outline" | "ghost" | "gold" | "glass";
+type ButtonVariant = "gold" | "navy" | "outline" | "outline-light" | "ghost";
 type ButtonSize = "sm" | "md" | "lg";
 
 interface ButtonProps extends HTMLMotionProps<"button"> {
@@ -13,29 +13,29 @@ interface ButtonProps extends HTMLMotionProps<"button"> {
 }
 
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  primary: "bg-primary text-white shadow-lg shadow-primary/30 hover:bg-hover",
-  outline: "border-2 border-white/70 text-white hover:bg-white/10",
-  ghost: "text-primary hover:bg-primary/10",
-  gold: "bg-gold text-dark shadow-lg shadow-gold/30 hover:brightness-105",
-  glass: "glass text-dark hover:bg-white/70",
+  gold: "bg-gold text-navy hover:bg-light-gold",
+  navy: "bg-navy text-white hover:bg-luxury-navy",
+  outline: "border border-navy/25 text-navy hover:border-navy hover:bg-navy/[0.03]",
+  "outline-light": "border border-white/35 text-white hover:border-gold hover:text-gold",
+  ghost: "text-navy hover:text-gold",
 };
 
 const SIZE_CLASSES: Record<ButtonSize, string> = {
-  sm: "px-4 py-2 text-sm",
-  md: "px-6 py-3 text-base",
-  lg: "px-8 py-4 text-lg",
+  sm: "px-5 py-2 text-xs",
+  md: "px-7 py-3 text-sm",
+  lg: "px-9 py-4 text-base",
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "primary", size = "md", children, ...props }, ref) => {
+  ({ className, variant = "navy", size = "md", children, ...props }, ref) => {
     return (
       <motion.button
         ref={ref}
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.97 }}
-        transition={{ type: "spring", stiffness: 400, damping: 22 }}
+        whileHover={{ y: -1 }}
+        whileTap={{ y: 0 }}
+        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
         className={cn(
-          "inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-colors focus-visible:outline-none",
+          "inline-flex items-center justify-center gap-2.5 font-medium tracking-wide transition-colors duration-300 focus-visible:outline-none",
           VARIANT_CLASSES[variant],
           SIZE_CLASSES[size],
           className

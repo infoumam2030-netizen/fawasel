@@ -1,102 +1,83 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  ShoppingBag,
-  Route,
-  Hospital,
-  School,
-  Trees,
-  Landmark,
-  Building,
-  TrainFront,
-  MapPin,
-  type LucideIcon,
-} from "lucide-react";
+import { MapPin } from "lucide-react";
 import { siteConfig } from "@/config/site.config";
-import type { LandmarkItem } from "@/types/config";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Button } from "@/components/ui/Button";
-import { staggerContainer, fadeUp, viewportOnce } from "@/lib/animations";
+import { staggerContainer, fadeUpSlow, viewportOnce } from "@/lib/animations";
 
-const CATEGORY_ICON: Record<LandmarkItem["category"], LucideIcon> = {
-  mall: ShoppingBag,
-  road: Route,
-  hospital: Hospital,
-  school: School,
-  park: Trees,
-  landmark: Landmark,
-  government: Building,
-  transit: TrainFront,
-};
+function DistanceList({ title, items }: { title: string; items: { id: string; name: string; distance: string }[] }) {
+  return (
+    <div>
+      <h3 className="mb-5 text-sm font-semibold tracking-wide text-dark-gold">{title}</h3>
+      <ul className="flex flex-col">
+        {items.map((item) => (
+          <li key={item.id} className="flex items-center justify-between border-b border-border py-4 text-navy">
+            <span>{item.name}</span>
+            <span className="font-medium text-muted">{item.distance}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export function Location() {
-  return (
-    <section id="location" className="bg-bg py-24 sm:py-32">
-      <Container>
-        <SectionHeading
-          eyebrow="الموقع"
-          title="شمال شرق الرياض — بين القادسية وإشبيلية والرماية"
-          description={siteConfig.address}
-          className="mb-14"
-        />
+  const { googleMapsUrl, googleMapsEmbedUrl, landmarks, districts } = siteConfig.location;
 
-        <div className="grid gap-8 lg:grid-cols-[1.1fr_1fr]">
+  return (
+    <section id="location" className="bg-white py-28 sm:py-36">
+      <Container>
+        <SectionHeading eyebrow="الموقع" title="في موقع يختصر عليك الطريق" className="mb-14" />
+
+        <div className="grid gap-14 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
           <motion.div
-            variants={fadeUp}
+            variants={fadeUpSlow}
             initial="hidden"
             whileInView="visible"
             viewport={viewportOnce}
-            className="relative overflow-hidden rounded-3xl border border-primary/10 shadow-xl shadow-primary/10"
+            className="relative aspect-[4/3] overflow-hidden border border-border lg:aspect-auto lg:min-h-[520px]"
           >
-            <iframe
-              src={siteConfig.googleMapsEmbedUrl}
-              className="h-[380px] w-full lg:h-full lg:min-h-[480px]"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title={`خريطة موقع ${siteConfig.projectName}`}
-            />
-            <a
-              href={siteConfig.googleMapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="absolute bottom-4 right-4"
-            >
-              <Button variant="gold" size="sm">
-                <MapPin className="h-4 w-4" />
+            {googleMapsEmbedUrl ? (
+              <iframe
+                src={googleMapsEmbedUrl}
+                className="h-full w-full"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title={`خريطة موقع ${siteConfig.projectName}`}
+              />
+            ) : (
+              <div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-navy text-white/60">
+                <MapPin className="h-8 w-8 text-gold" />
+                <span className="text-sm">الخريطة التفاعلية ستُضاف قريبًا</span>
+              </div>
+            )}
+            {googleMapsUrl && (
+              <a
+                href={googleMapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute bottom-5 right-5 border border-gold bg-white/95 px-5 py-2.5 text-sm font-medium text-navy transition-colors hover:bg-gold hover:text-navy"
+              >
                 فتح في خرائط جوجل
-              </Button>
-            </a>
+              </a>
+            )}
           </motion.div>
 
           <motion.div
-            variants={staggerContainer(0.05)}
+            variants={staggerContainer(0.08)}
             initial="hidden"
             whileInView="visible"
             viewport={viewportOnce}
-            className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2"
+            className="flex flex-col gap-12"
           >
-            {siteConfig.landmarks.map((landmark) => {
-              const Icon = CATEGORY_ICON[landmark.category];
-              return (
-                <motion.div
-                  key={landmark.id}
-                  variants={fadeUp}
-                  whileHover={{ y: -4, scale: 1.02 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 24 }}
-                  className="flex items-center gap-3 rounded-2xl border border-primary/10 bg-white p-4 shadow-sm transition-shadow hover:shadow-lg hover:shadow-primary/10"
-                >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-bold text-dark">{landmark.name}</p>
-                    <p className="text-xs text-text/50">{landmark.duration}</p>
-                  </div>
-                </motion.div>
-              );
-            })}
+            <motion.div variants={fadeUpSlow}>
+              <DistanceList title="معالم قريبة" items={landmarks} />
+            </motion.div>
+            <motion.div variants={fadeUpSlow}>
+              <DistanceList title="أحياء قريبة" items={districts} />
+            </motion.div>
           </motion.div>
         </div>
       </Container>
