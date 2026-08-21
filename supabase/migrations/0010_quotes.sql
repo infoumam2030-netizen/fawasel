@@ -20,6 +20,14 @@ create table public.quote_requests (
   project_details          text not null,
   expected_start_date      date,
   preferred_contact_method text not null default 'whatsapp',
+
+  -- Constant discriminators, present only so the two columns above can carry
+  -- a composite foreign key into public.form_options. This is what makes the
+  -- option lists genuinely configurable: a new contact method or budget band
+  -- is a dashboard row, not a migration, yet an invalid value is still
+  -- rejected by the database rather than by whatever code happens to write.
+  contact_method_group     text not null generated always as ('contact_method') stored,
+  budget_group             text not null generated always as ('budget') stored,
   status                   public.quote_status not null default 'new',
   assigned_to              uuid references public.profiles(id) on delete set null,
 
@@ -41,7 +49,20 @@ create table public.quote_requests (
   constraint quote_requests_number_unique unique (request_number),
   constraint quote_requests_name_length check (char_length(btrim(name)) between 2 and 120),
   constraint quote_requests_details_length check (char_length(btrim(project_details)) between 10 and 5000),
-  constraint quote_requests_phone_format check (phone ~ '^\+?[0-9 ()-]{7,20}$')
+  constraint quote_requests_phone_format check (phone ~ '^\+?[0-9 ()-]{7,20}$'),
+
+  -- ON DELETE RESTRICT: an option a historical lead depends on cannot be
+  -- deleted out from under it. Retiring an option means setting
+  -- is_active = false, which hides it from the form and preserves the record.
+  constraint quote_requests_contact_method_fk
+    foreign key (contact_method_group, preferred_contact_method)
+    references public.form_options (group_key, value) on delete restrict,
+
+  -- MATCH SIMPLE (the default): when budget is NULL the constraint is
+  -- satisfied, so "unspecified budget" remains valid without a sentinel row.
+  constraint quote_requests_budget_fk
+    foreign key (budget_group, budget)
+    references public.form_options (group_key, value) on delete restrict
 );
 
 create index quote_requests_status_created_idx

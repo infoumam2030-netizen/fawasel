@@ -965,6 +965,8 @@ export type Database = {
           project_details: string;
           expected_start_date: string | null;
           preferred_contact_method: string;
+          contact_method_group: string;
+          budget_group: string;
           status: Database["public"]["Enums"]["quote_status"];
           assigned_to: string | null;
           source: string | null;
@@ -994,6 +996,8 @@ export type Database = {
           project_details: string;
           expected_start_date?: string | null;
           preferred_contact_method?: string;
+          contact_method_group?: string;
+          budget_group?: string;
           status?: Database["public"]["Enums"]["quote_status"];
           assigned_to?: string | null;
           source?: string | null;
@@ -1023,6 +1027,8 @@ export type Database = {
           project_details?: string;
           expected_start_date?: string | null;
           preferred_contact_method?: string;
+          contact_method_group?: string;
+          budget_group?: string;
           status?: Database["public"]["Enums"]["quote_status"];
           assigned_to?: string | null;
           source?: string | null;
@@ -1043,6 +1049,18 @@ export type Database = {
             columns: ["assigned_to"];
             referencedRelation: "profiles";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "quote_requests_budget_fk";
+            columns: ["budget_group","budget"];
+            referencedRelation: "form_options";
+            referencedColumns: ["group_key","value"];
+          },
+          {
+            foreignKeyName: "quote_requests_contact_method_fk";
+            columns: ["contact_method_group","preferred_contact_method"];
+            referencedRelation: "form_options";
+            referencedColumns: ["group_key","value"];
           },
           {
             foreignKeyName: "quote_requests_package_id_fkey";

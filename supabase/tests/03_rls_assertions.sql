@@ -62,9 +62,34 @@ select tests.check('anon cannot delete projects', '42501',
 -- Public submission is the one write anonymous users may perform.
 select tests.check('anon may submit a quote request', 'ok',
   tests.write_as('anon', null, $q$
-    insert into public.quote_requests (name, phone, project_details, preferred_contact_method)
-    values ('عميل جديد', '+966541882358', 'أرغب في حملة تسويقية متكاملة.', 'whatsapp')
+    insert into public.quote_requests (name, phone, project_details, preferred_contact_method, budget)
+    values ('عميل جديد', '+966541882358', 'أرغب في حملة تسويقية متكاملة.', 'whatsapp', 'under_5k')
   $q$));
+
+-- Configurable option lists are enforced by the database, not just the form.
+select tests.check('an unknown contact method is rejected', '23503',
+  tests.write_as('anon', null, $q$
+    insert into public.quote_requests (name, phone, project_details, preferred_contact_method)
+    values ('عميل', '+966500000001', 'نص كافٍ لتجاوز الحد الأدنى.', 'carrier-pigeon')
+  $q$));
+
+select tests.check('an unknown budget band is rejected', '23503',
+  tests.write_as('anon', null, $q$
+    insert into public.quote_requests (name, phone, project_details, budget)
+    values ('عميل', '+966500000002', 'نص كافٍ لتجاوز الحد الأدنى.', 'one-million')
+  $q$));
+
+select tests.check('an unspecified budget remains valid', 'ok',
+  tests.write_as('anon', null, $q$
+    insert into public.quote_requests (name, phone, project_details, budget)
+    values ('عميل', '+966500000003', 'نص كافٍ لتجاوز الحد الأدنى.', null)
+  $q$));
+
+-- An option a lead depends on cannot be deleted; retiring it means
+-- is_active = false, which preserves the historical record.
+select tests.check('an in-use form option cannot be deleted', '23503',
+  tests.write_as('postgres', null,
+    $q$delete from public.form_options where group_key = 'contact_method' and value = 'whatsapp'$q$));
 
 -- Privilege fields in the submitted body must be ignored, not trusted.
 select tests.check('anon cannot self-assign a won status', 'ok',
@@ -73,14 +98,14 @@ select tests.check('anon cannot self-assign a won status', 'ok',
     values ('محاولة', '+966500000000', 'محاولة رفع الحالة إلى مربوحة.', 'won')
   $q$));
 
-select tests.check('submitted status is forced to new', '2',
+select tests.check('submitted status is forced to new', '3',
   (select count(*)::text from public.quote_requests where status = 'new'));
 
-select tests.check('request numbers are generated server-side', '2',
+select tests.check('request numbers are generated server-side', '3',
   (select count(*)::text from public.quote_requests
    where request_number ~ ('^PAN-' || to_char(now(), 'YYYY') || '-[0-9]{4}$')));
 
-select tests.check('request numbers are unique', '2',
+select tests.check('request numbers are unique', '3',
   (select count(distinct request_number)::text from public.quote_requests));
 
 -- ------------------------------------------------------------------- EDITOR
@@ -114,7 +139,7 @@ select tests.check('editor cannot promote itself to owner', '42501',
            '22222222-2222-2222-2222-222222222222')));
 
 -- -------------------------------------------------------------------- SALES
-select tests.check('sales reads quote requests', '2',
+select tests.check('sales reads quote requests', '3',
   tests.count_as('authenticated', :SALES, 'select count(*) from public.quote_requests')::text);
 
 select tests.check('sales may advance a lead status', 'ok',
@@ -177,7 +202,7 @@ select tests.check('no unauthorised service rows were created', '0',
 select tests.check('owner reads all profiles', '4',
   tests.count_as('authenticated', :OWNER, 'select count(*) from public.profiles')::text);
 
-select tests.check('owner reads quote requests', '2',
+select tests.check('owner reads quote requests', '3',
   tests.count_as('authenticated', :OWNER, 'select count(*) from public.quote_requests')::text);
 
 select tests.check('owner reads the activity log', '0',
