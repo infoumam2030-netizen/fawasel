@@ -10,7 +10,8 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "db:types": "node scripts/generate-db-types.mjs",
-    "db:test": "./scripts/run-db-tests.sh"
+    "db:test": "./scripts/run-db-tests.sh",
+    "db:apply": "./scripts/apply-migrations.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

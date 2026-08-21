@@ -53,12 +53,25 @@ the schema — nothing is created through the Supabase UI. 28 tables, RLS on
 every one.
 
 ```bash
-# Regenerate types after any migration, then commit the result
+# Check the target is empty and the migration set is intact — applies nothing
+npm run db:apply -- "$SUPABASE_DB_URL" --dry-run
+
+# Apply all twelve migrations in one transaction
+npm run db:apply -- "$SUPABASE_DB_URL" --confirm
+
+# Regenerate types from the live schema, then commit the result
 npm run db:types -- "$SUPABASE_DB_URL"
 
-# Apply the migrations, then run the RLS suite against a throwaway database
+# Apply the migrations to a throwaway database and run the RLS suite
 npm run db:test -- "postgresql://postgres@localhost:5432/postgres"
 ```
+
+`db:apply` refuses to run unless the target's `public` schema is empty,
+verifies every file against `supabase/migrations.sha256`, and applies all
+twelve inside a single transaction — Postgres has transactional DDL, so a
+failure anywhere rolls the project back to untouched rather than leaving it
+half-migrated. The migrations contain no `DROP` statements and seed no
+content.
 
 `supabase/tests/00_local_shims.sql` recreates just enough of Supabase's `auth`
 and `storage` schemas to run the migrations on plain Postgres. It is **never**
