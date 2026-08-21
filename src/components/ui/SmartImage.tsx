@@ -14,12 +14,12 @@ interface SmartImageProps {
 
 /**
  * Renders local/static assets (paths starting with "/") through Next's
- * optimized <Image>. Falls back to a plain <img> for external URLs, since
- * those can come from the units Google Sheet (any image host a client
- * pastes in) and next/image's optimizer rejects any remote host that
- * isn't explicitly whitelisted ahead of time in next.config.ts — which
- * would otherwise require a code change every time someone adds a new
- * image source to the sheet.
+ * optimized <Image>, and falls back to a plain <img> for anything remote.
+ *
+ * Phase 03 note: once media moves to Supabase Storage there is exactly one
+ * known remote host, which gets whitelisted in next.config.ts — at that point
+ * the remote branch below should go away and everything should run through
+ * next/image, as the brief requires.
  */
 export function SmartImage({ src, alt, fill, width, height, sizes, priority, className }: SmartImageProps) {
   const isLocal = src.startsWith("/");

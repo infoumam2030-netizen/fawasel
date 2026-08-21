@@ -5,21 +5,23 @@ import { fadeUpSlow, viewportOnce } from "@/lib/animations";
 import { cn } from "@/lib/utils";
 
 interface SectionHeadingProps {
+  /** Arabic (or primary-locale) eyebrow, e.g. خدماتنا */
   eyebrow?: string;
+  /** Optional English label shown alongside the eyebrow, e.g. WHAT WE DO */
+  label?: string;
   title: string;
   description?: string;
   align?: "center" | "start";
   className?: string;
-  light?: boolean;
 }
 
 export function SectionHeading({
   eyebrow,
+  label,
   title,
   description,
   align = "start",
   className,
-  light = false,
 }: SectionHeadingProps) {
   return (
     <motion.div
@@ -33,24 +35,18 @@ export function SectionHeading({
         className
       )}
     >
-      {eyebrow && (
-        <span className="section-label">
-          <span className="gold-rule" />
+      {(eyebrow || label) && (
+        <span className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.08em] text-lavender-soft">
+          <span className="h-px w-8 bg-lavender" aria-hidden="true" />
           {eyebrow}
+          {label && <span className="latin text-faint">{label}</span>}
         </span>
       )}
-      <h2
-        className={cn(
-          "text-3xl font-semibold leading-[1.15] tracking-tight sm:text-4xl md:text-5xl",
-          light ? "text-white" : "text-navy"
-        )}
-      >
+      <h2 className="text-3xl font-semibold leading-[1.15] tracking-tight text-foreground sm:text-4xl md:text-5xl">
         {title}
       </h2>
       {description && (
-        <p className={cn("max-w-xl text-base leading-relaxed sm:text-lg", light ? "text-white/70" : "text-muted")}>
-          {description}
-        </p>
+        <p className="max-w-xl text-base leading-relaxed text-muted sm:text-lg">{description}</p>
       )}
     </motion.div>
   );

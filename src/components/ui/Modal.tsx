@@ -10,10 +10,12 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
+  /** Accessible label for the close button — must be localised by the caller. */
+  closeLabel: string;
   children: ReactNode;
 }
 
-export function Modal({ isOpen, onClose, title, children }: ModalProps) {
+export function Modal({ isOpen, onClose, title, closeLabel, children }: ModalProps) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   useLockBodyScroll(isOpen);
 
@@ -43,7 +45,7 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
           aria-labelledby="modal-title"
         >
           <motion.div
-            className="absolute inset-0 bg-deep-navy/70 backdrop-blur-[2px]"
+            className="absolute inset-0 bg-ink/80 backdrop-blur-[2px]"
             onClick={onClose}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -54,17 +56,17 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 16 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto border border-border bg-white p-6 sm:p-10"
+            className="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto border border-border bg-surface p-6 sm:p-10"
           >
             <div className="mb-8 flex items-center justify-between border-b border-border pb-5">
-              <h3 id="modal-title" className="text-xl font-semibold text-navy">
+              <h3 id="modal-title" className="text-xl font-semibold text-foreground">
                 {title}
               </h3>
               <button
                 ref={closeButtonRef}
                 onClick={onClose}
-                aria-label="إغلاق"
-                className="p-2 text-muted transition-colors hover:text-gold"
+                aria-label={closeLabel}
+                className="p-2 text-muted transition-colors hover:text-lavender-soft"
               >
                 <X className="h-5 w-5" />
               </button>

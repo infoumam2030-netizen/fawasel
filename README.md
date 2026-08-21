@@ -1,136 +1,128 @@
-# طيبة 109
+# PANTHER — Marketing & Growth
 
-موقع تعريفي فاخر لمشروع **طيبة 109** — مشروع سكني تحت الإنشاء يضم 14 وحدة
-سكنية (شقق ودوبلكسات) شمال شرق الرياض. مبني بهوية بصرية تحريرية معمارية
-(كحلي/ذهبي)، وبنية قابلة لإعادة الاستخدام لأي مشروع سكني مستقبلي.
+Bilingual (Arabic / English) marketing platform for **PANTHER**.
 
-## المكدس التقني
+> نرصد بدقة. نسوّق بذكاء. ونصنع الأثر.
+> SPEED. FOCUS. GROWTH.
 
-- **Next.js 15** (App Router) + **TypeScript**
-- **Tailwind CSS v4**
-- **Framer Motion** للحركة والانتقالات (بطيئة، هادئة، محترمة لـ `prefers-reduced-motion`)
-- **Lucide Icons**
-- **next/font/google** — خط **IBM Plex Sans Arabic** فقط في كل الموقع
-- **Google Sheets** (googleapis + تصدير CSV عام) لبيانات توفر الوحدات
+The finished product is a public website, an admin dashboard and a Supabase
+CMS operating as one system: content changes in the dashboard, never in code.
 
-## البدء السريع
+---
+
+## Status
+
+| Phase | Scope | State |
+| ----- | ----- | ----- |
+| 01 | Foundation & bilingual shell | ✅ complete |
+| 02 | PANTHER design system | next |
+| 03 | Supabase, schema & RLS | pending |
+| 04 | Public website | pending |
+| 05 | Auth, dashboard shell & CMS modules | pending |
+| 06 | Quote system & conversion | pending |
+| 07 | SEO, performance, QA, launch | pending |
+
+The homepage currently renders a Phase 01 foundation page, not the real
+PANTHER homepage. It is replaced in Phase 04.
+
+## Stack
+
+Next.js 15 (App Router) · React 19 · TypeScript (strict) · Tailwind CSS v4 ·
+next-intl · Framer Motion · React Hook Form + Zod · Supabase *(Phase 03)*
+
+## Getting started
 
 ```bash
 npm install
-cp .env.example .env.local   # اختياري: لربط Google Sheets ببيانات حقيقية
+cp .env.example .env.local
 npm run dev
 ```
 
-افتح [http://localhost:3000](http://localhost:3000). بدون ربط Google
-Sheets، يعمل الموقع تلقائيًا ببيانات تجريبية (14 وحدة: 10 شقق + 4 دوبلكس)
-مطابقة لهيكل المشروع الحقيقي.
+| Command | Purpose |
+| ------- | ------- |
+| `npm run dev` | Development server |
+| `npm run build` | Production build |
+| `npm start` | Serve the production build |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | `tsc --noEmit` |
 
-### أوامر أخرى
+## Languages
 
-```bash
-npm run build   # بناء الإنتاج
-npm start       # تشغيل بناء الإنتاج محليًا
-npm run lint    # فحص الشيفرة
-```
+Arabic is the primary language and owns the canonical, unprefixed URLs.
 
-## ملف الإعدادات المركزي
+| Locale | URL | Direction |
+| ------ | --- | --------- |
+| Arabic | `/`, `/work/...` | RTL |
+| English | `/en`, `/en/work/...` | LTR |
 
-كل محتوى المشروع (الاسم، الحالة، الألوان، الأسعار، المميزات، المعالم
-القريبة، الضمانات، البنية التحتية، بيانات التواصل...) موجود في مكان واحد:
+- `src/i18n/routing.ts` is the single source of truth for locales, direction
+  and formatting tags. Automatic `Accept-Language` detection is deliberately
+  **off** so `/` is always Arabic.
+- UI strings live in `messages/ar.json` and `messages/en.json`. The two files
+  must stay key-identical.
+- Editorial content (services, projects, packages, FAQ…) is bilingual in the
+  database via `_en` sibling columns, with Arabic as the fallback — added in
+  Phase 03.
+- Always import navigation helpers from `@/i18n/navigation`, never from
+  `next/link` directly, so the locale prefix is applied.
 
-```
-src/config/site.config.ts
-```
+### RTL rules
 
-لا تحتوي أي مكوّنات على محتوى مكتوب مباشرة — كل شيء يُقرأ من هذا الملف.
+Use **CSS logical properties** only — `ms-*`, `me-*`, `ps-*`, `pe-*`,
+`start-*`, `end-*`, `border-s-*`, `inset-inline-*`. Never `left`/`right`, and
+never a mirrored RTL stylesheet. Latin brand vocabulary set inside Arabic
+copy gets the `.latin` class so bidi does not reorder it.
 
-### بيانات لم تُدخل بعد (بيّنة عمدًا)
+## Design tokens
 
-الحقول التالية تُركت فارغة لأن المعلومات الحقيقية لم تُزوَّد بعد، ويجب
-تعديلها يدويًا في `site.config.ts` قبل الإطلاق:
+Defined once in `src/app/globals.css`. Nothing should reference a raw hex
+value.
 
-- `contact.whatsapp`, `contact.phone`
-- `location.googleMapsUrl`, `location.googleMapsEmbedUrl`, `location.coordinates`
-- `constructionProgress` (يبقى `null` ويظهر "تحت الإنشاء" فقط، حتى تُزوَّد
-  نسبة إنجاز حقيقية لاحقًا)
+| Token | Value | Use |
+| ----- | ----- | --- |
+| `--color-ink` | `#08080A` | Page ground |
+| `--color-surface` | `#101014` | Panels |
+| `--color-foreground` | `#EDEDF2` | Body text |
+| `--color-lavender` | `#7136C0` | Brand purple — fills, rules, glow |
+| `--color-lavender-soft` | `#AC85F2` | Accent **text** |
 
-أزرار واتساب/الاتصال تتعطل تلقائيًا (بمظهر معطّل واضح) طالما هذه الحقول
-فارغة، بدلًا من إنتاج روابط مكسورة.
+`--color-lavender` is the exact purple from the supplied logo files. It
+measures ~2.8:1 on `--color-ink`, so it is valid for fills, borders, glow and
+large display type only. Use `--color-lavender-soft` (~7:1) for body text and
+small labels.
 
-## ربط Google Sheets (بيانات الوحدات)
+## Brand assets
 
-الطريقة الافتراضية **لا تحتاج Service Account ولا مفتاح JSON**: شارك
-الشيت بخيار "Anyone with the link can view"، وأضف معرّفه فقط:
+`public/brand/` holds the official marks, unmodified, in white / black /
+lavender, plus the key visual. `PantherMark` inlines the mark so it can
+inherit `currentColor`. The artwork must never be redrawn or substituted.
 
-```
-GOOGLE_SHEET_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-```
+Typeface: **IBM Plex Sans Arabic** — the supplied brand face, covering
+Arabic, Latin and numerals in one family, loaded via `next/font/google`.
 
-الأعمدة المتوقعة في تبويب "Units"، بالترتيب، بدءًا من الصف الثاني:
-
-| العمود | الوصف |
-| --- | --- |
-| A | Unit ID (رقم الوحدة) |
-| B | Name (اسم الوحدة) |
-| C | Type (`شقة` أو `دوبلكس`) |
-| D | Area (المساحة بالمتر) |
-| E | Price (السعر) |
-| F | Status (`متاح` / `محجوز` / `مباع`) |
-| G | Floor (الدور، اختياري) |
-| H | Features (مميزات مفصولة بـ `;`) |
-| I | Images (روابط صور مفصولة بـ `;`) |
-| J | Floor plan (رابط صورة المخطط) |
-
-للاطلاع على سلوك الموقع في كل حالة ربط (غير مربوط / مربوط وشغال / مربوط
-وفشل الطلب)، راجع التعليقات في `src/services/units.ts` — النقطة المهمة:
-الموقع لا يتعطل أبدًا؛ يتدرّج تلقائيًا لبيانات تجريبية أو حالة فارغة.
-
-## الوسائط (Media Assets)
-
-نظرًا لعدم توفر تصوير حقيقي بعد، تم توليد رسومات SVG معمارية تجريدية
-(خطوط ذهبية رفيعة على خلفية كحلية) كبدائل مؤقتة:
-
-```
-public/images/hero/hero.svg
-public/images/gallery/privacy.svg
-public/images/floor-plans/apartment.svg
-public/images/floor-plans/duplex-first.svg
-public/images/floor-plans/duplex-second.svg
-public/images/og/og-image.svg
-```
-
-استبدل هذه الملفات بنفس الأسماء (أو حدّث المسارات في `site.config.ts`)
-عند توفر التصوير الفعلي والمخططات الهندسية، دون أي تعديل على الشيفرة.
-
-## هيكل المشروع
+## Structure
 
 ```
 src/
-  app/                 صفحات ومسارات API (App Router)
+  app/
+    layout.tsx          pass-through root
+    not-found.tsx       branded, locale-aware 404 (owns its document)
+    [locale]/           localised routes — renders <html lang dir>
   components/
-    layout/            شريط التنقل العلوي
-    sections/           14 قسمًا لتدفق الصفحة الرئيسية
-    ui/                 مكوّنات واجهة قابلة لإعادة الاستخدام
-  config/               site.config.ts — كل المحتوى في مكان واحد
-  hooks/                React hooks (وحدات مباشرة، عدّاد تصاعدي...)
-  lib/                  دوال مساعدة، أنماط حركة، تجميع بيانات الوحدات
-  services/             منطق الأعمال (Google Sheets، تحويل بيانات الوحدات)
-  types/                تعريفات TypeScript المشتركة
+    site/               header, footer, locale switcher, brand mark
+    ui/                 design-system primitives
+  i18n/                 routing, navigation, request config
+  lib/                  utils, animation variants
+  config/app.ts         build-time constants only — never content
+messages/               ar.json · en.json
 ```
 
-## الأداء وإمكانية الوصول
+## Conventions
 
-- مكوّنات خادمية (Server Components) افتراضيًا؛ الحدود العميلية محصورة
-  بالأقسام التفاعلية فقط (تبويبات، قوائم، عدّادات).
-- تحميل كسول وتقسيم للشيفرة (`next/dynamic`) للأقسام الأدنى من الصفحة.
-- تحسين الصور عبر `next/image`.
-- هيكل عناوين دلالي، `aria-label` على العناصر التفاعلية، ودعم كامل لـ
-  `prefers-reduced-motion` بدون أي تعارض في الترطيب (hydration).
-- بيانات SEO عربية كاملة (Metadata، OpenGraph، Twitter، Schema.org،
-  `robots.txt`، `sitemap.xml`).
-
-## النشر
-
-يمكن نشر المشروع مباشرة على [Vercel](https://vercel.com/new) أو أي منصة
-تدعم Next.js 15. تأكد من ضبط متغيرات البيئة نفسها الموجودة في
-`.env.example` في إعدادات المنصة المستخدمة.
+- Server Components by default; `"use client"` only where interaction needs it.
+- Editable content belongs in the CMS, never in a config file or a component.
+- Every mutation validates with Zod on the server, checks authorisation
+  server-side, and writes an activity-log entry. Hiding a button is not
+  authorisation.
+- `SUPABASE_SERVICE_ROLE_KEY` is server-only and must never be prefixed with
+  `NEXT_PUBLIC_`.

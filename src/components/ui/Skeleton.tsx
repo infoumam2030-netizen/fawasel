@@ -3,11 +3,7 @@ import { cn } from "@/lib/utils";
 export function Skeleton({ className }: { className?: string }) {
   return (
     <div
-      className={cn(
-        "relative overflow-hidden bg-navy/[0.06]",
-        "before:absolute before:inset-0 before:-translate-x-full before:animate-shimmer before:shimmer-bg",
-        className
-      )}
+      className={cn("animate-pulse bg-surface-raised", className)}
       aria-hidden="true"
     />
   );

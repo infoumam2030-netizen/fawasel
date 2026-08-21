@@ -1,0 +1,67 @@
+{
+  "brand": {
+    "name": "PANTHER",
+    "business": "Marketing & Growth",
+    "motto": "SPEED. FOCUS. GROWTH.",
+    "statement": "We observe with precision. We market with intelligence. We create impact.",
+    "positioning": "Digital marketing agency"
+  },
+  "meta": {
+    "title": "PANTHER — Marketing & Growth",
+    "titleTemplate": "%s | PANTHER",
+    "description": "We help brands build a stronger presence, reach their audience with precision, and turn marketing into measurable growth."
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "work": "Work",
+    "packages": "Packages",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "skipToContent": "Skip to content"
+  },
+  "cta": {
+    "startProject": "Start your project",
+    "requestQuote": "Request a quote",
+    "exploreWork": "Explore our work",
+    "contactUs": "Contact us"
+  },
+  "locale": {
+    "switchTo": "Switch to Arabic",
+    "label": "Language"
+  },
+  "notFound": {
+    "code": "404",
+    "title": "Lost in the dark?",
+    "description": "The page you are looking for does not exist or has moved.",
+    "action": "Back to home"
+  },
+  "error": {
+    "title": "Something went wrong.",
+    "description": "Please try again.",
+    "retry": "Try again"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "services": "Strategy • Branding • Content • Ads • Web"
+  },
+  "foundation": {
+    "phaseLabel": "Phase 01 — Foundation & bilingual shell",
+    "title": "The platform foundation is in place.",
+    "description": "Bilingual routing, locale negotiation and direction handling are wired. Sections and the full design language are built in the phases that follow.",
+    "checklistTitle": "Delivered in this phase",
+    "nextTitle": "Up next",
+    "next": "Phase 02 — PANTHER design system",
+    "items": {
+      "routing": "Bilingual routing — Arabic at “/”, English at “/en”",
+      "direction": "RTL/LTR direction via CSS logical properties",
+      "switcher": "Locale switcher working site-wide",
+      "tokens": "Base identity tokens: black, white, lavender #7136C0",
+      "assets": "Official brand assets in place",
+      "cleanup": "Previous project’s domain code removed"
+    }
+  }
+}
