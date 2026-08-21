@@ -63,5 +63,90 @@
       "assets": "Official brand assets in place",
       "cleanup": "Previous project’s domain code removed"
     }
+  },
+  "design": {
+    "phase": "Phase 02 — PANTHER design system",
+    "title": "Design system",
+    "subtitle": "The visual foundation every PANTHER section is built on. An internal review page — not part of the public site.",
+    "toc": "Contents",
+    "groups": {
+      "foundations": "Foundations",
+      "components": "Components",
+      "motion": "Motion"
+    },
+    "sections": {
+      "color": "Colour",
+      "typography": "Typography",
+      "spacing": "Spacing",
+      "border": "Borders & radius",
+      "elevation": "Elevation",
+      "glow": "Glow",
+      "buttons": "Buttons",
+      "badges": "Badges",
+      "cards": "Cards",
+      "forms": "Fields & forms",
+      "headings": "Section headings",
+      "navigation": "Navigation states",
+      "loading": "Loading states",
+      "motion": "Motion primitives",
+      "hover": "Hover interactions",
+      "responsive": "Responsive & direction"
+    },
+    "notes": {
+      "color": "Brand lavender #7136C0 is taken from the official logo files. It measures 2.85:1 on the ground, so it is used for fills, rules, glow and large display type only. Small text uses the lifted token.",
+      "typography": "IBM Plex Sans Arabic covers Arabic, Latin and numerals in one family. Line heights are set generously so Arabic breathes.",
+      "spacing": "A fixed spacing scale. Gaps between siblings are laid out with gap, never with per-element margins.",
+      "border": "Sharp geometry. Radius is zero by default — hairline borders carry the layout.",
+      "elevation": "On a black ground a shadow alone reads as nothing, so depth is a hairline border plus a wide ambient shadow.",
+      "glow": "The brand's energy. Used sparingly: one glowing element per viewport, never more.",
+      "buttons": "Only the primary button carries glow, and only on hover.",
+      "motion": "Observe → Focus → Move → Impact. Fast, precise, controlled — never bouncy.",
+      "hover": "Anything clickable looks clickable: a border shift, a small lift, or a colour change.",
+      "loading": "Every operation has an explicit loading state, and duplicate submits are blocked.",
+      "responsive": "Switch language above to review RTL and LTR. Resize the window to review responsive behaviour.",
+      "reducedMotion": "With “reduce motion” enabled at the OS level, all animation is removed and content appears directly in its resting state."
+    },
+    "labels": {
+      "contrast": "Contrast",
+      "usage": "Usage",
+      "token": "Token",
+      "value": "Value",
+      "replay": "Replay",
+      "rest": "Rest",
+      "hover": "Hover",
+      "active": "Active",
+      "disabled": "Disabled",
+      "loading": "Loading",
+      "variant": "Variant",
+      "size": "Size",
+      "sample": "Sample",
+      "onlyLarge": "Large display & fills only",
+      "bodyText": "Body text",
+      "decorative": "Decorative / large text"
+    },
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "Your full name",
+      "email": "Email",
+      "emailError": "Please enter a valid email address.",
+      "service": "Service required",
+      "serviceHint": "Services are loaded from the database in Phase 04.",
+      "details": "Project details",
+      "detailsPlaceholder": "Tell us about your project and your goals.",
+      "disabled": "Disabled field",
+      "choose": "Choose a service"
+    },
+    "demo": {
+      "cardTitle": "Sample card",
+      "cardBody": "A short descriptive line showing how a card reads inside the system.",
+      "featured": "Most requested",
+      "headingEyebrow": "Our services",
+      "headingTitle": "From strategy to execution.",
+      "headingDescription": "We build integrated marketing solutions that help your brand grow.",
+      "observe": "We observe with precision.",
+      "focusStep": "We market with intelligence.",
+      "move": "We create impact.",
+      "impact": "SPEED. FOCUS. GROWTH."
+    }
   }
 }

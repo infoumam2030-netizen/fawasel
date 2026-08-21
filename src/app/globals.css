@@ -1,53 +1,105 @@
 @import "tailwindcss";
 
 /**
- * PANTHER — foundation tokens (Phase 01).
+ * ===========================================================================
+ * PANTHER DESIGN SYSTEM
+ * ===========================================================================
  *
- * Only the base identity lives here: the colour system, the type family and
- * the motion baseline. The full design system — type scale, elevation, glow,
- * component variants — is built on top of these in Phase 02. Nothing in the
- * codebase should reference a raw hex value; everything goes through a token.
+ * Black × White × Lavender. Premium, aggressive, minimal, cinematic.
+ *
+ * Every colour, size, border, shadow and easing in the application comes from
+ * a token defined here. No component should ever contain a raw hex value, a
+ * one-off pixel size, or an ad-hoc cubic-bezier.
+ *
+ * Contrast ratios quoted below are measured against --color-ink (#08080A).
+ * ===========================================================================
  */
 
 :root {
-  /* Ground — the site is a dark, cinematic environment by definition. */
+  /* --- Ground ------------------------------------------------------------
+   * The environment is dark by definition. Three levels only; more would
+   * dilute the depth rather than add to it.
+   */
   --color-ink: #08080a;
   --color-surface: #101014;
   --color-surface-raised: #16161c;
 
-  /* Type */
+  /* --- Type --------------------------------------------------------------
+   * foreground 17.15:1 · muted 6.19:1 (AA body) · faint 3.14:1 (large text
+   * and decoration only — never body copy).
+   */
   --color-foreground: #ededf2;
   --color-muted: #8e8e9c;
   --color-faint: #5e5e6c;
 
-  /* Structure */
+  /* --- Structure ---------------------------------------------------------
+   * Hairlines carry most of the layout. `border` is visible, `border-soft`
+   * is a whisper used to separate large blocks without drawing a line.
+   */
   --color-border: #26262f;
   --color-border-soft: #1a1a21;
+  --color-border-strong: #3a3a47;
 
-  /**
-   * Brand lavender, taken from the supplied logo files (every variant of
-   * panther-0*.svg uses exactly this purple).
-   *
-   * `--color-lavender` measures ~2.8:1 on --color-ink. That is fine for
-   * fills, rules, glows and large display type, and NOT sufficient for body
-   * text or small labels — use --color-lavender-soft (~7:1) for those.
+  /* --- Brand -------------------------------------------------------------
+   * --color-lavender is the exact purple from the supplied logo files. At
+   * 2.85:1 on ink it is valid for FILLS, RULES, GLOW and LARGE DISPLAY TYPE
+   * only. Anything small or read as text uses --color-lavender-soft (7.04:1).
    */
   --color-lavender: #7136c0;
   --color-lavender-soft: #ac85f2;
   --color-lavender-deep: #4a1f85;
-  --color-lavender-glow: rgb(113 54 192 / 0.35);
-  --color-lavender-wash: rgb(113 54 192 / 0.12);
-
+  --color-lavender-dim: #2a1550;
   --color-white: #ffffff;
 
-  /* Motion — fast, controlled, decisive. Never bouncy. */
+  /* --- Semantic ----------------------------------------------------------
+   * Kept deliberately desaturated so they never compete with the brand
+   * accent. Used for CMS states and form feedback, not for decoration.
+   */
+  --color-success: #4fbf8b;
+  --color-warning: #e0a33e;
+  --color-danger: #e4585b;
+
+  /* --- Radius ------------------------------------------------------------
+   * Sharp geometry is core to the identity. 0 is the default; 2px exists
+   * only to keep small controls from looking accidentally chipped.
+   */
+  --radius-none: 0px;
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-full: 9999px;
+
+  /* --- Elevation ---------------------------------------------------------
+   * On a black ground, shadow alone reads as nothing. Depth comes from a
+   * hairline border plus a wide, very dark ambient shadow.
+   */
+  --shadow-elev-1: 0 1px 2px rgb(0 0 0 / 0.5), 0 4px 12px -4px rgb(0 0 0 / 0.4);
+  --shadow-elev-2: 0 2px 4px rgb(0 0 0 / 0.5), 0 12px 32px -8px rgb(0 0 0 / 0.55);
+  --shadow-elev-3: 0 4px 8px rgb(0 0 0 / 0.5), 0 24px 64px -16px rgb(0 0 0 / 0.6);
+
+  /* --- Glow --------------------------------------------------------------
+   * The brand's energy. Used sparingly: an active state, a featured card, a
+   * primary CTA on hover. Never ambient, never on more than one element in
+   * the same viewport.
+   */
+  --shadow-glow-sm: 0 0 20px -6px rgb(113 54 192 / 0.55);
+  --shadow-glow-md: 0 0 44px -10px rgb(113 54 192 / 0.65);
+  --shadow-glow-lg: 0 0 90px -20px rgb(113 54 192 / 0.75);
+  --shadow-glow-inset: inset 0 1px 0 0 rgb(172 133 242 / 0.14);
+
+  /* --- Motion ------------------------------------------------------------
+   * Fast, controlled, decisive. Two easings only — one for entrance and
+   * movement, one for the sharper "impact" moment. Never bouncy.
+   */
   --ease-panther: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-impact: cubic-bezier(0.16, 0.9, 0.24, 1);
+  --duration-instant: 120ms;
   --duration-fast: 200ms;
-  --duration-base: 400ms;
-  --duration-slow: 650ms;
+  --duration-base: 340ms;
+  --duration-slow: 560ms;
 }
 
 @theme inline {
+  /* Colour */
   --color-ink: var(--color-ink);
   --color-surface: var(--color-surface);
   --color-surface-raised: var(--color-surface-raised);
@@ -56,15 +108,87 @@
   --color-faint: var(--color-faint);
   --color-border: var(--color-border);
   --color-border-soft: var(--color-border-soft);
+  --color-border-strong: var(--color-border-strong);
   --color-lavender: var(--color-lavender);
   --color-lavender-soft: var(--color-lavender-soft);
   --color-lavender-deep: var(--color-lavender-deep);
+  --color-lavender-dim: var(--color-lavender-dim);
   --color-white: var(--color-white);
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-danger: var(--color-danger);
 
+  /* Type family */
   --font-sans: var(--font-plex-arabic);
 
+  /**
+   * Type scale — fluid, editorial, with a strong jump between display and
+   * body. Arabic needs more leading than Latin at the same size, so line
+   * heights are set generously across the whole scale.
+   */
+  --text-display: clamp(2.75rem, 6.2vw, 5.5rem);
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.03em;
+  --text-display--font-weight: 600;
+
+  --text-h1: clamp(2.25rem, 4.6vw, 3.75rem);
+  --text-h1--line-height: 1.1;
+  --text-h1--letter-spacing: -0.025em;
+  --text-h1--font-weight: 600;
+
+  --text-h2: clamp(1.75rem, 3.2vw, 2.75rem);
+  --text-h2--line-height: 1.18;
+  --text-h2--letter-spacing: -0.02em;
+  --text-h2--font-weight: 600;
+
+  --text-h3: clamp(1.25rem, 2vw, 1.75rem);
+  --text-h3--line-height: 1.3;
+  --text-h3--letter-spacing: -0.01em;
+  --text-h3--font-weight: 600;
+
+  --text-h4: 1.125rem;
+  --text-h4--line-height: 1.45;
+  --text-h4--font-weight: 600;
+
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.75;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.75;
+
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.7;
+
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.6;
+
+  /** Uppercase, letter-spaced eyebrows and metadata. */
+  --text-label: 0.6875rem;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.2em;
+  --text-label--font-weight: 600;
+
+  /* Radius */
+  --radius-none: var(--radius-none);
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+
+  /* Elevation & glow */
+  --shadow-elev-1: var(--shadow-elev-1);
+  --shadow-elev-2: var(--shadow-elev-2);
+  --shadow-elev-3: var(--shadow-elev-3);
+  --shadow-glow-sm: var(--shadow-glow-sm);
+  --shadow-glow-md: var(--shadow-glow-md);
+  --shadow-glow-lg: var(--shadow-glow-lg);
+
+  /* Motion */
   --ease-panther: var(--ease-panther);
+  --ease-impact: var(--ease-impact);
 }
+
+/* ===========================================================================
+ * Base
+ * ======================================================================== */
 
 html {
   scroll-behavior: smooth;
@@ -77,6 +201,7 @@ body {
   font-family: var(--font-plex-arabic), system-ui, sans-serif;
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 ::selection {
@@ -102,14 +227,49 @@ body {
   background: var(--color-lavender-deep);
 }
 
+/* ===========================================================================
+ * Utilities
+ * ======================================================================== */
+
 /**
- * Latin brand vocabulary set inside Arabic copy (PANTHER, SPEED. FOCUS.
- * GROWTH.) must not be reordered by the bidi algorithm.
+ * Latin brand vocabulary set inside Arabic copy — PANTHER, SPEED. FOCUS.
+ * GROWTH., service names — must not be reordered by the bidi algorithm.
  */
 .latin {
   direction: ltr;
   unicode-bidi: isolate;
 }
+
+/**
+ * A hairline that fades out, used to close sections without drawing a hard
+ * line across the full width. Direction-aware: fades toward the inline end.
+ */
+.rule-fade {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(to var(--rule-direction, right), var(--color-border), transparent);
+}
+[dir="rtl"] .rule-fade {
+  --rule-direction: left;
+}
+
+/**
+ * Cinematic vignette behind hero-scale compositions. Purely decorative and
+ * pointer-transparent.
+ */
+.glow-field {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(60% 70% at 50% 0%, rgb(113 54 192 / 0.22), transparent 70%);
+}
+
+/* ===========================================================================
+ * Reduced motion
+ *
+ * Motion is decorative throughout: every reveal ends in its resting state,
+ * so disabling animation never hides content.
+ * ======================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
   html {
