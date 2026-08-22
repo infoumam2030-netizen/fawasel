@@ -67,6 +67,10 @@ npm run db:test -- "postgresql://postgres@localhost:5432/postgres"
 ```
 
 ```bash
+# Run the full RLS suite against a LIVE database, inside a transaction that is
+# always rolled back — verifies real policies, persists nothing
+npm run db:verify -- "$SUPABASE_DB_URL"
+
 # Verify secret handling: expected variables, .env hygiene, gitignore
 # coverage, and that the service-role key cannot reach the browser
 npm run verify:env
@@ -88,6 +92,23 @@ failure aborts with a non-zero exit and an unmodified database:
 
 The migrations seed no content: after a clean apply, all 28 public tables
 hold zero rows.
+
+`db:test` and `db:verify` are not interchangeable. `db:test` creates a
+throwaway database, migrates it and drops it — right locally, wrong against a
+managed Supabase project, where the connecting role generally cannot
+`CREATE DATABASE` and where fixture rows would land in real tables.
+`db:verify` runs the same 69 assertions inside a single transaction that is
+always rolled back, then confirms nothing persisted.
+
+### Credentials and this repository
+
+Cloud environment variables are **not** a secrets store — the Claude Code docs
+state values are readable by anyone using the environment. Keep
+`SUPABASE_SERVICE_ROLE_KEY` and `SUPABASE_DB_URL` out of them; run `db:apply`,
+`db:types` and `db:verify` from a machine where those values stay local.
+`NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are public by
+design — they ship in the browser bundle — so those two are safe to configure
+anywhere.
 
 ### Environment variables
 
