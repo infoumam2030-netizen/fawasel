@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "db:types": "node scripts/generate-db-types.mjs",
     "db:test": "./scripts/run-db-tests.sh",
-    "db:apply": "./scripts/apply-migrations.sh"
+    "db:apply": "./scripts/apply-migrations.sh",
+    "verify:env": "./scripts/verify-env-safety.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

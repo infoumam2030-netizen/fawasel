@@ -66,12 +66,37 @@ npm run db:types -- "$SUPABASE_DB_URL"
 npm run db:test -- "postgresql://postgres@localhost:5432/postgres"
 ```
 
-`db:apply` refuses to run unless the target's `public` schema is empty,
-verifies every file against `supabase/migrations.sha256`, and applies all
-twelve inside a single transaction — Postgres has transactional DDL, so a
-failure anywhere rolls the project back to untouched rather than leaving it
-half-migrated. The migrations contain no `DROP` statements and seed no
-content.
+```bash
+# Verify secret handling: expected variables, .env hygiene, gitignore
+# coverage, and that the service-role key cannot reach the browser
+npm run verify:env
+```
+
+`db:apply` runs eight safety checks before it will touch anything, and any
+failure aborts with a non-zero exit and an unmodified database:
+
+| Check | Behaviour |
+| ----- | --------- |
+| Project identity | Prints host, port, project ref, database, user, server version |
+| Project cross-check | Aborts if the DB URL and `NEXT_PUBLIC_SUPABASE_URL` name different projects — resolved *before* connecting, so an unreachable host cannot mask a mismatch |
+| Empty target | Aborts if `public` holds any table or enum, naming the conflicts |
+| Bucket conflict | Aborts if a `media` bucket already exists |
+| Checksums | Every file verified against `supabase/migrations.sha256` |
+| Ordering | Filenames must be a contiguous, unique `0001..N` sequence |
+| No `DROP` | The set is grepped and refused if any appear |
+| Atomicity | All migrations run in one transaction — Postgres has transactional DDL, so a failure anywhere rolls the project back to untouched rather than leaving it half-migrated |
+
+The migrations seed no content: after a clean apply, all 28 public tables
+hold zero rows.
+
+### Environment variables
+
+| Variable | Scope | Purpose |
+| -------- | ----- | ------- |
+| `NEXT_PUBLIC_SUPABASE_URL` | browser + server | Project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | browser + server | Anon key; always subject to RLS |
+| `SUPABASE_SERVICE_ROLE_KEY` | **server only** | Bypasses RLS. Read in exactly one module, `src/lib/supabase/admin.ts`, which imports `server-only` so a Client Component importing it fails the build |
+| `SUPABASE_DB_URL` | tooling only | Direct Postgres connection for `db:apply`, `db:types`, `db:test`. Never read at runtime |
 
 `supabase/tests/00_local_shims.sql` recreates just enough of Supabase's `auth`
 and `storage` schemas to run the migrations on plain Postgres. It is **never**
