@@ -1,0 +1,287 @@
+{
+  "healthy-clinics": [
+    {
+      "source": "عروض الأسنان - تصميم2.png",
+      "path": "assets/media/projects/healthy-clinics/cover.webp",
+      "width": 1080,
+      "height": 1350,
+      "source_px": "1080x1350",
+      "bytes": 140806,
+      "source_bytes": 1595586,
+      "storage_path": "projects/healthy-clinics/cover.webp",
+      "role": "cover"
+    },
+    {
+      "source": "ارت بورد الجلسة الكوريةArtboard 1.jpg",
+      "path": "assets/media/projects/healthy-clinics/gallery-01.webp",
+      "width": 1080,
+      "height": 1350,
+      "source_px": "1080x1350",
+      "bytes": 138760,
+      "source_bytes": 280818,
+      "storage_path": "projects/healthy-clinics/gallery-01.webp",
+      "role": "gallery"
+    },
+    {
+      "source": "تبرع.jpg",
+      "path": "assets/media/projects/healthy-clinics/gallery-02.webp",
+      "width": 1080,
+      "height": 1350,
+      "source_px": "1080x1350",
+      "bytes": 91972,
+      "source_bytes": 686516,
+      "storage_path": "projects/healthy-clinics/gallery-02.webp",
+      "role": "gallery"
+    },
+    {
+      "source": "ترقبوا.jpg",
+      "path": "assets/media/projects/healthy-clinics/gallery-03.webp",
+      "width": 1080,
+      "height": 1350,
+      "source_px": "1080x1350",
+      "bytes": 107312,
+      "source_bytes": 851740,
+      "storage_path": "projects/healthy-clinics/gallery-03.webp",
+      "role": "gallery"
+    },
+    {
+      "source": "عرض تقشير.jpg",
+      "path": "assets/media/projects/healthy-clinics/gallery-04.webp",
+      "width": 1080,
+      "height": 1350,
+      "source_px": "1080x1350",
+      "bytes": 145540,
+      "source_bytes": 921714,
+      "storage_path": "projects/healthy-clinics/gallery-04.webp",
+      "role": "gallery"
+    }
+  ],
+  "wafiya-loqma": [
+    {
+      "source": "02.png",
+      "path": "assets/media/projects/wafiya-loqma/cover.webp",
+      "width": 1080,
+      "height": 1440,
+      "source_px": "1080x1440",
+      "bytes": 114654,
+      "source_bytes": 2429183,
+      "storage_path": "projects/wafiya-loqma/cover.webp",
+      "role": "cover"
+    },
+    {
+      "source": "03.png",
+      "path": "assets/media/projects/wafiya-loqma/gallery-01.webp",
+      "width": 1080,
+      "height": 1440,
+      "source_px": "1080x1440",
+      "bytes": 82068,
+      "source_bytes": 1470803,
+      "storage_path": "projects/wafiya-loqma/gallery-01.webp",
+      "role": "gallery"
+    },
+    {
+      "source": "بلاليط وافية copy.jpg",
+      "path": "assets/media/projects/wafiya-loqma/gallery-02.webp",
+      "width": 1080,
+      "height": 1440,
+      "source_px": "1080x1440",
+      "bytes": 98424,
+      "source_bytes": 973338,
+      "storage_path": "projects/wafiya-loqma/gallery-02.webp",
+      "role": "gallery"
+    },
+    {
+      "source": "جلستك copy.jpg",
+      "path": "assets/media/projects/wafiya-loqma/gallery-03.webp",
+      "width": 1080,
+      "height": 1440,
+      "source_px": "1080x1440",
+      "bytes": 130406,
+      "source_bytes": 1084799,
+      "storage_path": "projects/wafiya-loqma/gallery-03.webp",
+      "role": "gallery"
+    },
+    {
+      "source": "كلوب تونا copy.jpg",
+      "path": "assets/media/projects/wafiya-loqma/gallery-04.webp",
+      "width": 1080,
+      "height": 1440,
+      "source_px": "1080x1440",
+      "bytes": 110214,
+      "source_bytes": 1012219,
+      "storage_path": "projects/wafiya-loqma/gallery-04.webp",
+      "role": "gallery"
+    }
+  ],
+  "warranty-point": [
+    {
+      "source": "6.png",
+      "path": "assets/media/projects/warranty-point/cover.webp",
+      "width": 1080,
+      "height": 1440,
+      "source_px": "1080x1440",
+      "bytes": 234470,
+      "source_bytes": 2572606,
+      "storage_path": "projects/warranty-point/cover.webp",
+      "role": "cover"
+    },
+    {
+      "source": "11.png",
+      "path": "assets/media/projects/warranty-point/gallery-01.webp",
+      "width": 1080,
+      "height": 1440,
+      "source_px": "1080x1440",
+      "bytes": 132140,
+      "source_bytes": 1667170,
+      "storage_path": "projects/warranty-point/gallery-01.webp",
+      "role": "gallery"
+    },
+    {
+      "source": "12.png",
+      "path": "assets/media/projects/warranty-point/gallery-02.webp",
+      "width": 1080,
+      "height": 1440,
+      "source_px": "1080x1440",
+      "bytes": 104596,
+      "source_bytes": 1755711,
+      "storage_path": "projects/warranty-point/gallery-02.webp",
+      "role": "gallery"
+    },
+    {
+      "source": "15.png",
+      "path": "assets/media/projects/warranty-point/gallery-03.webp",
+      "width": 1080,
+      "height": 1440,
+      "source_px": "1080x1440",
+      "bytes": 91954,
+      "source_bytes": 1566098,
+      "storage_path": "projects/warranty-point/gallery-03.webp",
+      "role": "gallery"
+    },
+    {
+      "source": "2.png",
+      "path": "assets/media/projects/warranty-point/gallery-04.webp",
+      "width": 1080,
+      "height": 1440,
+      "source_px": "1080x1440",
+      "bytes": 100466,
+      "source_bytes": 1530451,
+      "storage_path": "projects/warranty-point/gallery-04.webp",
+      "role": "gallery"
+    }
+  ],
+  "almugheb": [
+    {
+      "source": "Artboard 16.png",
+      "path": "assets/media/projects/almugheb/cover.webp",
+      "width": 1080,
+      "height": 1350,
+      "source_px": "1080x1350",
+      "bytes": 185286,
+      "source_bytes": 2361788,
+      "storage_path": "projects/almugheb/cover.webp",
+      "role": "cover"
+    },
+    {
+      "source": "11.png",
+      "path": "assets/media/projects/almugheb/gallery-01.webp",
+      "width": 1080,
+      "height": 1350,
+      "source_px": "1080x1350",
+      "bytes": 87298,
+      "source_bytes": 1729817,
+      "storage_path": "projects/almugheb/gallery-01.webp",
+      "role": "gallery"
+    },
+    {
+      "source": "9.png",
+      "path": "assets/media/projects/almugheb/gallery-02.webp",
+      "width": 1080,
+      "height": 1440,
+      "source_px": "1080x1440",
+      "bytes": 82570,
+      "source_bytes": 1265517,
+      "storage_path": "projects/almugheb/gallery-02.webp",
+      "role": "gallery"
+    },
+    {
+      "source": "Artboard 000000000.png",
+      "path": "assets/media/projects/almugheb/gallery-03.webp",
+      "width": 1080,
+      "height": 1350,
+      "source_px": "1080x1350",
+      "bytes": 205934,
+      "source_bytes": 2402759,
+      "storage_path": "projects/almugheb/gallery-03.webp",
+      "role": "gallery"
+    },
+    {
+      "source": "Artboard 11O.png",
+      "path": "assets/media/projects/almugheb/gallery-04.webp",
+      "width": 1080,
+      "height": 1350,
+      "source_px": "1080x1350",
+      "bytes": 105352,
+      "source_bytes": 2062076,
+      "storage_path": "projects/almugheb/gallery-04.webp",
+      "role": "gallery"
+    }
+  ],
+  "home-body": [
+    {
+      "source": "home body2 copy.jpg",
+      "path": "assets/media/projects/home-body/cover.webp",
+      "width": 1080,
+      "height": 1440,
+      "source_px": "1080x1440",
+      "bytes": 124000,
+      "source_bytes": 1043637,
+      "storage_path": "projects/home-body/cover.webp",
+      "role": "cover"
+    },
+    {
+      "source": "home body10 copy 2.jpg",
+      "path": "assets/media/projects/home-body/gallery-01.webp",
+      "width": 1080,
+      "height": 1440,
+      "source_px": "1080x1440",
+      "bytes": 70924,
+      "source_bytes": 854735,
+      "storage_path": "projects/home-body/gallery-01.webp",
+      "role": "gallery"
+    },
+    {
+      "source": "home body3 copy 2.jpg",
+      "path": "assets/media/projects/home-body/gallery-02.webp",
+      "width": 1080,
+      "height": 1440,
+      "source_px": "1080x1440",
+      "bytes": 91726,
+      "source_bytes": 864089,
+      "storage_path": "projects/home-body/gallery-02.webp",
+      "role": "gallery"
+    },
+    {
+      "source": "home body4 copy.jpg",
+      "path": "assets/media/projects/home-body/gallery-03.webp",
+      "width": 1080,
+      "height": 1440,
+      "source_px": "1080x1440",
+      "bytes": 73676,
+      "source_bytes": 811892,
+      "storage_path": "projects/home-body/gallery-03.webp",
+      "role": "gallery"
+    },
+    {
+      "source": "home body5 copy 2.jpg",
+      "path": "assets/media/projects/home-body/gallery-04.webp",
+      "width": 1080,
+      "height": 1440,
+      "source_px": "1080x1440",
+      "bytes": 126312,
+      "source_bytes": 935309,
+      "storage_path": "projects/home-body/gallery-04.webp",
+      "role": "gallery"
+    }
+  ]
+}
