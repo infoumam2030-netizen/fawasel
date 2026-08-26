@@ -2,6 +2,8 @@ import { Trash2 } from "lucide-react";
 
 import { deleteMediaAction } from "@/app/admin/actions";
 import { MediaUploader } from "@/components/admin/MediaUploader";
+import { getAdminStrings } from "@/i18n/admin";
+import { getAdminLocale } from "@/lib/admin-locale";
 import { listAdmin } from "@/lib/cms/admin";
 import type { MediaAsset } from "@/lib/cms/types";
 
@@ -14,25 +16,27 @@ function formatSize(bytes: number): string {
 }
 
 export default async function MediaPage() {
-  const assets = ((await listAdmin("media_assets")) as MediaAsset[]).sort((a, b) =>
-    b.createdAt.localeCompare(a.createdAt),
-  );
+  const [rows, locale] = await Promise.all([
+    listAdmin("media_assets") as Promise<MediaAsset[]>,
+    getAdminLocale(),
+  ]);
+  const assets = [...rows].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  const t = getAdminStrings(locale);
 
   return (
     <div>
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="label">Site</p>
-          <h1 className="display mt-2 text-3xl">MEDIA LIBRARY</h1>
-          <p className="mt-2 text-sm text-dim">{assets.length} files</p>
+          <p className="label">{t.groupSite}</p>
+          <h1 className="display mt-2 text-3xl">{t.mediaTitle}</h1>
+          <p className="mt-2 text-sm text-dim">{assets.length} {t.files}</p>
         </div>
-        <MediaUploader />
+        <MediaUploader t={t} />
       </header>
 
       {assets.length === 0 ? (
         <p className="mt-8 rounded border border-[var(--color-line)] p-8 text-center text-sm text-dim">
-          No media yet. Upload the portrait, client logos and project imagery here — they become
-          selectable in every image field.
+          {t.mediaEmpty}
         </p>
       ) : (
         <ul className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
@@ -56,7 +60,7 @@ export default async function MediaPage() {
                   <button
                     type="submit"
                     className="text-dim hover:text-accent"
-                    aria-label={`Delete ${asset.fileName}`}
+                    aria-label={`${t.delete} ${asset.fileName}`}
                   >
                     <Trash2 className="h-3.5 w-3.5" aria-hidden />
                   </button>

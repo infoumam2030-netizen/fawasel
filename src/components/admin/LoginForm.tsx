@@ -4,21 +4,22 @@ import { Loader2, LogIn } from "lucide-react";
 import { useActionState } from "react";
 
 import { loginAction, type ActionState } from "@/app/admin/actions";
+import type { AdminStrings } from "@/i18n/admin";
 
-export function LoginForm({ configured }: { configured: boolean }) {
+export function LoginForm({ configured, t }: { configured: boolean; t: AdminStrings }) {
   const [state, formAction, pending] = useActionState<ActionState, FormData>(loginAction, {});
 
   return (
     <form action={formAction} className="mt-8 space-y-4">
       <div>
         <label className="admin-label" htmlFor="email">
-          Email
+          {t.email}
         </label>
         <input id="email" name="email" type="email" autoComplete="username" required className="admin-input" />
       </div>
       <div>
         <label className="admin-label" htmlFor="password">
-          Password
+          {t.password}
         </label>
         <input
           id="password"
@@ -38,8 +39,7 @@ export function LoginForm({ configured }: { configured: boolean }) {
 
       {!configured ? (
         <p className="rounded border border-[var(--color-line)] p-3 text-xs text-dim">
-          Admin credentials are not configured. Set ADMIN_EMAIL, ADMIN_PASSWORD_HASH and
-          ADMIN_SESSION_SECRET (see README) before deploying.
+          {t.notConfigured}
         </p>
       ) : null}
 
@@ -53,7 +53,7 @@ export function LoginForm({ configured }: { configured: boolean }) {
         ) : (
           <LogIn className="h-4 w-4" aria-hidden />
         )}
-        Sign in
+        {t.signIn}
       </button>
     </form>
   );

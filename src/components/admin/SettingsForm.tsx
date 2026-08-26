@@ -6,13 +6,16 @@ import { useActionState } from "react";
 import { saveSettingsAction, type ActionState } from "@/app/admin/actions";
 import { MediaPicker, type MediaOption } from "@/components/admin/MediaPicker";
 import type { SiteSettings } from "@/lib/cms/types";
+import type { AdminStrings } from "@/i18n/admin";
 
 export function SettingsForm({
   settings,
   media,
+  t,
 }: {
   settings: SiteSettings;
   media: MediaOption[];
+  t: AdminStrings;
 }) {
   const [state, formAction, pending] = useActionState<ActionState, FormData>(
     saveSettingsAction,
@@ -24,11 +27,11 @@ export function SettingsForm({
   return (
     <form action={formAction} className="space-y-10 pb-24">
       <section>
-        <h2 className="admin-label border-b border-[var(--color-line)] pb-2">SEO & sharing</h2>
+        <h2 className="admin-label border-b border-[var(--color-line)] pb-2">{t.seoGroup}</h2>
         <div className="mt-4 grid gap-5 lg:grid-cols-2">
           <div>
             <label className="admin-label" htmlFor="siteTitle-en">
-              Site title · EN
+              {t.siteTitleField} · EN
             </label>
             <input
               id="siteTitle-en"
@@ -39,7 +42,7 @@ export function SettingsForm({
           </div>
           <div>
             <label className="admin-label" htmlFor="siteTitle-ar">
-              Site title · AR
+              {t.siteTitleField} · AR
             </label>
             <input
               id="siteTitle-ar"
@@ -51,7 +54,7 @@ export function SettingsForm({
           </div>
           <div>
             <label className="admin-label" htmlFor="siteDescription-en">
-              Description · EN
+              {t.descriptionField} · EN
             </label>
             <textarea
               id="siteDescription-en"
@@ -63,7 +66,7 @@ export function SettingsForm({
           </div>
           <div>
             <label className="admin-label" htmlFor="siteDescription-ar">
-              Description · AR
+              {t.descriptionField} · AR
             </label>
             <textarea
               id="siteDescription-ar"
@@ -76,7 +79,7 @@ export function SettingsForm({
           </div>
           <div className="lg:col-span-2">
             <label className="admin-label" htmlFor="keywords">
-              Keywords
+              {t.keywordsField}
             </label>
             <input
               id="keywords"
@@ -85,10 +88,10 @@ export function SettingsForm({
               className="admin-input"
             />
           </div>
-          <MediaPicker name="ogImage" label="OG image" defaultValue={settings.ogImage} library={media} />
+          <MediaPicker name="ogImage" label={t.ogImageField} defaultValue={settings.ogImage} library={media} t={t} />
           <div>
             <label className="admin-label" htmlFor="favicon">
-              Favicon path
+              {t.faviconField}
             </label>
             <input
               id="favicon"
@@ -101,17 +104,17 @@ export function SettingsForm({
       </section>
 
       <section>
-        <h2 className="admin-label border-b border-[var(--color-line)] pb-2">Contact & language</h2>
+        <h2 className="admin-label border-b border-[var(--color-line)] pb-2">{t.contactGroup}</h2>
         <div className="mt-4 grid gap-5 lg:grid-cols-3">
           <div>
             <label className="admin-label" htmlFor="email">
-              Email
+              {t.emailField}
             </label>
             <input id="email" name="email" defaultValue={settings.email} className="admin-input" />
           </div>
           <div>
             <label className="admin-label" htmlFor="whatsapp">
-              WhatsApp
+              {t.whatsappField}
             </label>
             <input
               id="whatsapp"
@@ -123,7 +126,7 @@ export function SettingsForm({
           </div>
           <div>
             <label className="admin-label" htmlFor="defaultLocale">
-              Default language
+              {t.defaultLocaleField}
             </label>
             <select
               id="defaultLocale"
@@ -131,19 +134,19 @@ export function SettingsForm({
               defaultValue={settings.defaultLocale}
               className="admin-input"
             >
-              <option value="en">English</option>
-              <option value="ar">العربية</option>
+              <option value="en">{t.languageEnglish}</option>
+              <option value="ar">{t.languageArabic}</option>
             </select>
           </div>
         </div>
       </section>
 
       <section>
-        <h2 className="admin-label border-b border-[var(--color-line)] pb-2">Appearance</h2>
+        <h2 className="admin-label border-b border-[var(--color-line)] pb-2">{t.appearanceGroup}</h2>
         <div className="mt-4 grid gap-5 lg:grid-cols-3">
           <div>
             <label className="admin-label" htmlFor="accentFrom">
-              Accent — from
+              {t.accentFromField}
             </label>
             <input
               id="accentFrom"
@@ -155,7 +158,7 @@ export function SettingsForm({
           </div>
           <div>
             <label className="admin-label" htmlFor="accentTo">
-              Accent — to
+              {t.accentToField}
             </label>
             <input
               id="accentTo"
@@ -167,7 +170,7 @@ export function SettingsForm({
           </div>
           <div>
             <label className="admin-label" htmlFor="visualIntensity">
-              Visual intensity ({settings.visualIntensity}%)
+              {t.intensityField} ({settings.visualIntensity}%)
             </label>
             <input
               id="visualIntensity"
@@ -179,28 +182,29 @@ export function SettingsForm({
               className="w-full accent-[var(--accent-to)]"
             />
             <p className="mt-1 text-[0.6875rem] text-dim">
-              Controls grain, glow and HUD density across the site.
+              {t.intensityHelp}
             </p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2 className="admin-label border-b border-[var(--color-line)] pb-2">Imagery</h2>
+        <h2 className="admin-label border-b border-[var(--color-line)] pb-2">{t.imageryGroup}</h2>
         <div className="mt-4 grid gap-5 lg:grid-cols-3">
-          <MediaPicker name="heroImage" label="Hero portrait" defaultValue={settings.heroImage} library={media} />
+          <MediaPicker name="heroImage" label={t.heroImageField} defaultValue={settings.heroImage} library={media} t={t} />
           <MediaPicker
             name="heroRevealImage"
-            label="Hero spotlight reveal (optional)"
+            label={t.heroRevealField}
             defaultValue={settings.heroRevealImage}
             library={media}
+            t={t}
           />
-          <MediaPicker name="aboutImage" label="About portrait" defaultValue={settings.aboutImage} library={media} />
+          <MediaPicker name="aboutImage" label={t.aboutImageField} defaultValue={settings.aboutImage} library={media} t={t} />
         </div>
       </section>
 
       <section>
-        <h2 className="admin-label border-b border-[var(--color-line)] pb-2">Homepage sections</h2>
+        <h2 className="admin-label border-b border-[var(--color-line)] pb-2">{t.sectionsGroup}</h2>
         <ul className="mt-4 flex flex-wrap gap-3">
           {sectionKeys.map((key) => (
             <li key={key}>
@@ -224,9 +228,9 @@ export function SettingsForm({
             {state.error ? (
               <span className="text-accent">{state.error}</span>
             ) : state.ok ? (
-              <span className="text-emerald-400">Saved.</span>
+              <span className="text-emerald-400">{t.saved}</span>
             ) : (
-              <span className="text-dim">Settings apply site-wide.</span>
+              <span className="text-dim">{t.settingsNote}</span>
             )}
           </p>
           <button
@@ -239,7 +243,7 @@ export function SettingsForm({
             ) : (
               <Save className="h-3.5 w-3.5" aria-hidden />
             )}
-            Save settings
+            {t.saveSettings}
           </button>
         </div>
       </div>

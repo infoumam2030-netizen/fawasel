@@ -1,7 +1,9 @@
 import { AlertTriangle, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-import { adminCollections } from "@/lib/cms/collections";
+import { getAdminStrings } from "@/i18n/admin";
+import { getAdminLocale } from "@/lib/admin-locale";
+import { adminCollections, collectionLabel } from "@/lib/cms/collections";
 import { listAdmin } from "@/lib/cms/admin";
 import { getStore } from "@/lib/cms/store";
 import type { Inquiry } from "@/lib/cms/types";
@@ -19,52 +21,51 @@ export default async function AdminHome() {
     }),
   );
 
-  const inquiries = (await listAdmin("inquiries")) as Inquiry[];
+  const [inquiries, locale] = await Promise.all([
+    listAdmin("inquiries") as Promise<Inquiry[]>,
+    getAdminLocale(),
+  ]);
+  const t = getAdminStrings(locale);
   const recent = [...inquiries].sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, 5);
   const projects = counts.find((entry) => entry.config.name === "projects");
 
   return (
     <div className="space-y-10">
       <header>
-        <p className="label">Overview</p>
-        <h1 className="display mt-2 text-3xl">DASHBOARD</h1>
-        <p className="mt-2 text-sm text-muted">
-          Everything on the public site is edited from here. Published changes are live immediately.
-        </p>
+        <p className="label">{t.groupOverview}</p>
+        <h1 className="display mt-2 text-3xl">{t.dashboardTitle}</h1>
+        <p className="mt-2 text-sm text-muted">{t.dashboardIntro}</p>
       </header>
 
       {!store.writable ? (
         <p className="flex items-start gap-3 rounded border border-[var(--color-line)] bg-graphite p-4 text-sm text-muted">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden />
-          The JSON data file is not writable in this environment, so edits will not persist. Configure
-          Supabase (see README) for a production-grade data layer.
+          {t.notWritable}
         </p>
       ) : null}
 
       {projects && projects.total === 0 ? (
         <p className="rounded border border-[var(--color-line)] bg-graphite p-4 text-sm text-muted">
-          No projects yet — the public Work section shows an empty state until the first case study is
-          published.{" "}
+          {t.noProjects}{" "}
           <Link href="/admin/projects/new" className="text-accent underline">
-            Create the first project
+            {t.createFirstProject}
           </Link>
-          .
         </p>
       ) : null}
 
       <section>
-        <h2 className="admin-label">Collections</h2>
+        <h2 className="admin-label">{t.collections}</h2>
         <ul className="mt-3 grid gap-px border border-[var(--color-line)] bg-[var(--color-line)] sm:grid-cols-2 lg:grid-cols-4">
           {counts.map(({ config, total, published }) => (
             <li key={config.name} className="bg-void">
               <Link href={`/admin/${config.name}`} className="group block p-5">
-                <p className="admin-label">{config.label}</p>
+                <p className="admin-label">{collectionLabel(config, locale)}</p>
                 <p className="mt-2 text-3xl font-semibold tabular-nums">{total}</p>
                 <p className="mt-1 text-xs text-dim">
-                  {config.readOnly ? "records" : `${published} published`}
+                  {config.readOnly ? t.recordsCount : `${published} ${t.publishedCount}`}
                 </p>
                 <span className="mt-4 inline-flex items-center gap-1 text-[0.6875rem] uppercase tracking-[0.14em] text-muted transition-colors group-hover:text-accent">
-                  Manage
+                  {t.manage}
                   <ArrowRight className="h-3 w-3" aria-hidden />
                 </span>
               </Link>
@@ -74,10 +75,10 @@ export default async function AdminHome() {
       </section>
 
       <section>
-        <h2 className="admin-label">Latest inquiries</h2>
+        <h2 className="admin-label">{t.latestInquiries}</h2>
         {recent.length === 0 ? (
           <p className="mt-3 rounded border border-[var(--color-line)] p-5 text-sm text-dim">
-            No inquiries yet. Submissions from the contact form land here.
+            {t.noInquiries}
           </p>
         ) : (
           <ul className="mt-3 divide-y divide-[var(--color-line)] rounded border border-[var(--color-line)]">
@@ -93,7 +94,7 @@ export default async function AdminHome() {
                   </span>
                 ) : null}
                 <span className="ms-auto text-[0.6875rem] text-dim">
-                  {new Date(inquiry.createdAt).toLocaleDateString("en-GB")}
+                  {new Date(inquiry.createdAt).toLocaleDateString(locale === "ar" ? "ar-EG" : "en-GB")}
                 </span>
               </li>
             ))}
@@ -102,12 +103,10 @@ export default async function AdminHome() {
       </section>
 
       <section>
-        <h2 className="admin-label">Data layer</h2>
+        <h2 className="admin-label">{t.dataLayer}</h2>
         <p className="mt-3 text-sm text-muted">
-          Active adapter: <span className="text-offwhite">{store.kind}</span>
-          {store.kind === "json"
-            ? " — file-backed storage in data/cms.json. Set the Supabase environment variables to switch without code changes."
-            : " — Postgres via Supabase."}
+          {t.activeAdapter} <span className="text-offwhite">{store.kind}</span>
+          {store.kind === "json" ? t.jsonNote : t.supabaseNote}
         </p>
       </section>
     </div>

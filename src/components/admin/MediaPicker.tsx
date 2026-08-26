@@ -3,6 +3,8 @@
 import { ImagePlus, Upload, X } from "lucide-react";
 import { useRef, useState } from "react";
 
+import type { AdminStrings } from "@/i18n/admin";
+
 export type MediaOption = { id: string; url: string; fileName: string };
 
 /**
@@ -14,11 +16,13 @@ export function MediaPicker({
   defaultValue = "",
   library,
   label,
+  t,
 }: {
   name: string;
   defaultValue?: string;
   library: MediaOption[];
   label?: string;
+  t: AdminStrings;
 }) {
   const [value, setValue] = useState(defaultValue);
   const [open, setOpen] = useState(false);
@@ -36,12 +40,12 @@ export function MediaPicker({
       const response = await fetch("/api/admin/media", { method: "POST", body });
       const json = (await response.json()) as { url?: string; id?: string; error?: string };
       const url = json.url;
-      if (!response.ok || !url) throw new Error(json.error ?? "Upload failed");
+      if (!response.ok || !url) throw new Error(json.error ?? t.uploadFailed);
       setAssets((current) => [{ id: json.id ?? url, url, fileName: file.name }, ...current]);
       setValue(url);
       setOpen(false);
     } catch (uploadError) {
-      setError(uploadError instanceof Error ? uploadError.message : "Upload failed");
+      setError(uploadError instanceof Error ? uploadError.message : t.uploadFailed);
     } finally {
       setUploading(false);
     }
@@ -66,7 +70,7 @@ export function MediaPicker({
             name={name}
             value={value}
             onChange={(event) => setValue(event.target.value)}
-            placeholder="/uploads/file.jpg or https://…"
+            placeholder={t.imagePlaceholder}
             className="admin-input"
           />
           <div className="mt-2 flex flex-wrap items-center gap-2">
@@ -75,7 +79,7 @@ export function MediaPicker({
               onClick={() => setOpen((current) => !current)}
               className="rounded border border-[var(--color-line)] px-3 py-1.5 text-[0.6875rem] uppercase tracking-[0.12em] text-muted hover:text-offwhite"
             >
-              {open ? "Close library" : "Library"}
+              {open ? t.closeLibrary : t.library}
             </button>
             <button
               type="button"
@@ -84,7 +88,7 @@ export function MediaPicker({
               className="inline-flex items-center gap-1.5 rounded border border-[var(--color-line)] px-3 py-1.5 text-[0.6875rem] uppercase tracking-[0.12em] text-muted hover:text-offwhite disabled:opacity-50"
             >
               <Upload className="h-3 w-3" aria-hidden />
-              {uploading ? "Uploading…" : "Upload"}
+              {uploading ? t.uploading : t.upload}
             </button>
             {value ? (
               <button
@@ -93,7 +97,7 @@ export function MediaPicker({
                 className="inline-flex items-center gap-1 text-[0.6875rem] uppercase tracking-[0.12em] text-dim hover:text-accent"
               >
                 <X className="h-3 w-3" aria-hidden />
-                Clear
+                {t.clear}
               </button>
             ) : null}
           </div>
@@ -117,7 +121,7 @@ export function MediaPicker({
         <ul className="mt-3 grid max-h-64 grid-cols-3 gap-2 overflow-y-auto rounded border border-[var(--color-line)] p-2 sm:grid-cols-5">
           {assets.length === 0 ? (
             <li className="col-span-full p-4 text-center text-xs text-dim">
-              The media library is empty. Upload a file to start.
+              {t.emptyLibrary}
             </li>
           ) : null}
           {assets.map((asset) => (

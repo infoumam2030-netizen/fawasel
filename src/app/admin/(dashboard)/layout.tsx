@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import { AdminShell } from "@/components/admin/AdminShell";
+import { getAdminStrings } from "@/i18n/admin";
+import { getAdminLocale } from "@/lib/admin-locale";
 import { getSession } from "@/lib/auth";
 import { getStore } from "@/lib/cms/store";
 
@@ -14,10 +16,16 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const session = await getSession();
   if (!session) redirect("/admin/login");
 
-  const store = await getStore();
+  const [store, locale] = await Promise.all([getStore(), getAdminLocale()]);
 
   return (
-    <AdminShell email={session.email} storeKind={store.kind} writable={store.writable}>
+    <AdminShell
+      email={session.email}
+      storeKind={store.kind}
+      writable={store.writable}
+      locale={locale}
+      t={getAdminStrings(locale)}
+    >
       {children}
     </AdminShell>
   );

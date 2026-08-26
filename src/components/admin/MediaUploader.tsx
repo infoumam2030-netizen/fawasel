@@ -4,8 +4,10 @@ import { Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
+import type { AdminStrings } from "@/i18n/admin";
+
 /** Multi-file upload used on the media library page. */
-export function MediaUploader() {
+export function MediaUploader({ t }: { t: AdminStrings }) {
   const router = useRouter();
   const input = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
@@ -21,12 +23,12 @@ export function MediaUploader() {
         const response = await fetch("/api/admin/media", { method: "POST", body });
         if (!response.ok) {
           const json = (await response.json()) as { error?: string };
-          throw new Error(json.error ?? `Upload failed for ${file.name}`);
+          throw new Error(json.error ?? `${t.uploadFailed}: ${file.name}`);
         }
       }
       router.refresh();
     } catch (uploadError) {
-      setError(uploadError instanceof Error ? uploadError.message : "Upload failed");
+      setError(uploadError instanceof Error ? uploadError.message : t.uploadFailed);
     } finally {
       setBusy(false);
     }
@@ -41,7 +43,7 @@ export function MediaUploader() {
         className="inline-flex items-center gap-2 rounded bg-[linear-gradient(96deg,var(--accent-from),var(--accent-to))] px-5 py-2.5 text-[0.6875rem] font-medium uppercase tracking-[0.12em] text-[#0a0a0b] disabled:opacity-60"
       >
         <Upload className="h-3.5 w-3.5" aria-hidden />
-        {busy ? "Uploading…" : "Upload files"}
+        {busy ? t.uploading : t.uploadFiles}
       </button>
       <input
         ref={input}

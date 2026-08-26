@@ -92,6 +92,26 @@ await Promise.all([
 ]);
 check("sign in reaches the dashboard", page.url().endsWith("/admin"));
 
+// --- dashboard language -----------------------------------------------------
+await page.getByRole("button", { name: /Switch dashboard language/ }).click();
+await page.waitForFunction(
+  () => document.querySelector('[dir="rtl"]') !== null,
+  undefined,
+  { timeout: 10000 },
+).catch(() => undefined);
+check(
+  "dashboard switches to Arabic RTL",
+  (await page.locator('[dir="rtl"]').count()) > 0 &&
+    (await page.content()).includes("المشاريع"),
+);
+await page.getByRole("button", { name: /Switch dashboard language/ }).click();
+await page.waitForFunction(
+  () => document.body.innerText.includes("Projects"),
+  undefined,
+  { timeout: 10000 },
+).catch(() => undefined);
+check("dashboard switches back to English", (await page.content()).includes("Projects"));
+
 // --- create + publish a project --------------------------------------------
 const slug = `smoke-test-${Date.now()}`;
 await page.goto(`${BASE}/admin/projects/new`, { waitUntil: "networkidle" });

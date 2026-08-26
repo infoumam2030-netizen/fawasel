@@ -4,7 +4,9 @@ import { Loader2, Plus, Save, Trash2 } from "lucide-react";
 import { useActionState, useState } from "react";
 
 import { MediaPicker, type MediaOption } from "@/components/admin/MediaPicker";
-import type { Field } from "@/lib/cms/collections";
+import { fieldHelp, fieldLabel, type Field } from "@/lib/cms/collections";
+import type { AdminStrings } from "@/i18n/admin";
+import type { Locale } from "@/lib/cms/types";
 import { saveDocAction, type ActionState } from "@/app/admin/actions";
 import { cn } from "@/lib/utils";
 
@@ -12,7 +14,8 @@ export type ReferenceOptions = Record<string, { id: string; label: string }[]>;
 
 type KeyMetric = { label: { en: string; ar: string }; value: string };
 
-function localizedPair(field: Field, value: unknown, area: boolean) {
+function localizedPair(field: Field, value: unknown, area: boolean, locale: Locale) {
+  const label = fieldLabel(field, locale);
   const localized = (value ?? { en: "", ar: "" }) as { en: string; ar: string };
   const Tag = area ? "textarea" : "input";
   return (
@@ -20,7 +23,7 @@ function localizedPair(field: Field, value: unknown, area: boolean) {
       {(["en", "ar"] as const).map((lang) => (
         <div key={lang}>
           <label className="admin-label" htmlFor={`${field.name}-${lang}`}>
-            {field.label} · {lang.toUpperCase()}
+            {label} · {lang.toUpperCase()}
           </label>
           <Tag
             id={`${field.name}-${lang}`}
@@ -36,41 +39,41 @@ function localizedPair(field: Field, value: unknown, area: boolean) {
   );
 }
 
-function KeyMetricsEditor({ initial }: { initial: KeyMetric[] }) {
+function KeyMetricsEditor({ initial, t }: { initial: KeyMetric[]; t: AdminStrings }) {
   const [rows, setRows] = useState<KeyMetric[]>(
     initial.length > 0 ? initial : [{ label: { en: "", ar: "" }, value: "" }],
   );
 
   return (
     <div>
-      <span className="admin-label">Key metrics</span>
+      <span className="admin-label">{t.keyMetricsTitle}</span>
       <ul className="space-y-2">
         {rows.map((row, index) => (
           <li key={index} className="grid gap-2 sm:grid-cols-[1fr_1fr_1fr_auto]">
             <input
               name="keyMetric.label.en"
               defaultValue={row.label.en}
-              placeholder="Label (EN)"
+              placeholder={t.metricLabelEn}
               className="admin-input"
             />
             <input
               name="keyMetric.label.ar"
               defaultValue={row.label.ar}
               dir="rtl"
-              placeholder="Label (AR)"
+              placeholder={t.metricLabelAr}
               className="admin-input"
             />
             <input
               name="keyMetric.value"
               defaultValue={row.value}
-              placeholder="e.g. +240%"
+              placeholder={t.metricValue}
               className="admin-input"
             />
             <button
               type="button"
               onClick={() => setRows((current) => current.filter((_, i) => i !== index))}
               className="rounded border border-[var(--color-line)] px-3 text-dim hover:text-accent"
-              aria-label={`Remove metric ${index + 1}`}
+              aria-label={`${t.removeMetric} ${index + 1}`}
             >
               <Trash2 className="h-3.5 w-3.5" aria-hidden />
             </button>
@@ -83,7 +86,7 @@ function KeyMetricsEditor({ initial }: { initial: KeyMetric[] }) {
         className="mt-2 inline-flex items-center gap-1.5 rounded border border-[var(--color-line)] px-3 py-1.5 text-[0.6875rem] uppercase tracking-[0.12em] text-muted hover:text-offwhite"
       >
         <Plus className="h-3 w-3" aria-hidden />
-        Add metric
+        {t.addMetric}
       </button>
     </div>
   );
@@ -94,17 +97,23 @@ function FieldControl({
   value,
   references,
   media,
+  locale,
+  t,
 }: {
   field: Field;
   value: unknown;
   references: ReferenceOptions;
   media: MediaOption[];
+  locale: Locale;
+  t: AdminStrings;
 }) {
+  const label = fieldLabel(field, locale);
+
   switch (field.type) {
     case "localized":
-      return localizedPair(field, value, false);
+      return localizedPair(field, value, false, locale);
     case "localizedArea":
-      return localizedPair(field, value, true);
+      return localizedPair(field, value, true, locale);
     case "boolean":
       return (
         <label className="flex items-center gap-3 pt-5 text-sm">
@@ -114,23 +123,23 @@ function FieldControl({
             defaultChecked={Boolean(value)}
             className="h-4 w-4 accent-[var(--accent-to)]"
           />
-          {field.label}
+          {label}
         </label>
       );
     case "image":
-      return <MediaPicker name={field.name} defaultValue={String(value ?? "")} library={media} label={field.label} />;
+      return <MediaPicker name={field.name} defaultValue={String(value ?? "")} library={media} label={label} t={t} />;
     case "images":
       return (
         <div>
           <label className="admin-label" htmlFor={field.name}>
-            {field.label}
+            {label}
           </label>
           <textarea
             id={field.name}
             name={field.name}
             rows={4}
             defaultValue={Array.isArray(value) ? value.join("\n") : ""}
-            placeholder="One image URL per line"
+            placeholder={t.oneUrlPerLine}
             className="admin-input"
           />
         </div>
@@ -139,7 +148,7 @@ function FieldControl({
       return (
         <div>
           <label className="admin-label" htmlFor={field.name}>
-            {field.label}
+            {label}
           </label>
           <input
             id={field.name}
@@ -153,7 +162,7 @@ function FieldControl({
       return (
         <div>
           <label className="admin-label" htmlFor={field.name}>
-            {field.label}
+            {label}
           </label>
           <select
             id={field.name}
@@ -174,7 +183,7 @@ function FieldControl({
       const selected = new Set((Array.isArray(value) ? value : []) as string[]);
       return (
         <fieldset>
-          <legend className="admin-label">{field.label}</legend>
+          <legend className="admin-label">{label}</legend>
           <div className="flex flex-wrap gap-2">
             {(references[field.reference ?? ""] ?? []).map((option) => (
               <label
@@ -196,12 +205,12 @@ function FieldControl({
       );
     }
     case "keyMetrics":
-      return <KeyMetricsEditor initial={(Array.isArray(value) ? value : []) as KeyMetric[]} />;
+      return <KeyMetricsEditor initial={(Array.isArray(value) ? value : []) as KeyMetric[]} t={t} />;
     case "textarea":
       return (
         <div>
           <label className="admin-label" htmlFor={field.name}>
-            {field.label}
+            {label}
           </label>
           <textarea
             id={field.name}
@@ -216,7 +225,7 @@ function FieldControl({
       return (
         <div>
           <label className="admin-label" htmlFor={field.name}>
-            {field.label}
+            {label}
           </label>
           <input
             id={field.name}
@@ -231,7 +240,7 @@ function FieldControl({
       return (
         <div>
           <label className="admin-label" htmlFor={field.name}>
-            {field.label}
+            {label}
           </label>
           <input
             id={field.name}
@@ -252,6 +261,8 @@ export function DocForm({
   references,
   media,
   previewHref,
+  locale,
+  t,
 }: {
   collection: string;
   id: string | null;
@@ -260,6 +271,8 @@ export function DocForm({
   references: ReferenceOptions;
   media: MediaOption[];
   previewHref?: string;
+  locale: Locale;
+  t: AdminStrings;
 }) {
   const [state, formAction, pending] = useActionState<ActionState, FormData>(
     saveDocAction.bind(null, collection, id),
@@ -271,8 +284,17 @@ export function DocForm({
       <div className="grid gap-6 lg:grid-cols-2">
         {fields.map((field) => (
           <div key={field.name} className={cn(field.wide && "lg:col-span-2")}>
-            <FieldControl field={field} value={values[field.name]} references={references} media={media} />
-            {field.help ? <p className="mt-1.5 text-[0.6875rem] text-dim">{field.help}</p> : null}
+            <FieldControl
+              field={field}
+              value={values[field.name]}
+              references={references}
+              media={media}
+              locale={locale}
+              t={t}
+            />
+            {fieldHelp(field, locale) ? (
+              <p className="mt-1.5 text-[0.6875rem] text-dim">{fieldHelp(field, locale)}</p>
+            ) : null}
           </div>
         ))}
       </div>
@@ -283,9 +305,9 @@ export function DocForm({
             {state.error ? (
               <span className="text-accent">{state.error}</span>
             ) : state.ok ? (
-              <span className="text-emerald-400">Saved.</span>
+              <span className="text-emerald-400">{t.saved}</span>
             ) : (
-              <span className="text-dim">Unsaved changes are not published.</span>
+              <span className="text-dim">{t.unsavedNote}</span>
             )}
           </p>
           <div className="flex items-center gap-3">
@@ -296,7 +318,7 @@ export function DocForm({
                 rel="noreferrer"
                 className="rounded border border-[var(--color-line)] px-4 py-2 text-[0.6875rem] uppercase tracking-[0.12em] text-muted hover:text-offwhite"
               >
-                Preview
+                {t.preview}
               </a>
             ) : null}
             <button
@@ -309,7 +331,7 @@ export function DocForm({
               ) : (
                 <Save className="h-3.5 w-3.5" aria-hidden />
               )}
-              Save
+              {t.save}
             </button>
           </div>
         </div>

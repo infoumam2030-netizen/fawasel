@@ -5,9 +5,10 @@ import { useActionState } from "react";
 
 import { saveContentAction, type ActionState } from "@/app/admin/actions";
 import type { SiteContentBlock } from "@/lib/cms/types";
+import type { AdminStrings } from "@/i18n/admin";
 
 /** Edits every CMS copy block, grouped by the section it appears in. */
-export function ContentForm({ groups }: { groups: [string, SiteContentBlock[]][] }) {
+export function ContentForm({ groups, t }: { groups: [string, SiteContentBlock[]][]; t: AdminStrings }) {
   const [state, formAction, pending] = useActionState<ActionState, FormData>(saveContentAction, {});
 
   return (
@@ -26,7 +27,7 @@ export function ContentForm({ groups }: { groups: [string, SiteContentBlock[]][]
                     <div className="mt-2 grid gap-3 sm:grid-cols-2">
                       <div>
                         <label className="admin-label" htmlFor={`${block.id}-en`}>
-                          English
+                          {t.english}
                         </label>
                         <Tag
                           id={`${block.id}-en`}
@@ -38,7 +39,7 @@ export function ContentForm({ groups }: { groups: [string, SiteContentBlock[]][]
                       </div>
                       <div>
                         <label className="admin-label" htmlFor={`${block.id}-ar`}>
-                          العربية
+                          {t.arabic}
                         </label>
                         <Tag
                           id={`${block.id}-ar`}
@@ -64,9 +65,9 @@ export function ContentForm({ groups }: { groups: [string, SiteContentBlock[]][]
             {state.error ? (
               <span className="text-accent">{state.error}</span>
             ) : state.ok ? (
-              <span className="text-emerald-400">Saved.</span>
+              <span className="text-emerald-400">{t.saved}</span>
             ) : (
-              <span className="text-dim">Copy is published to the live site on save.</span>
+              <span className="text-dim">{t.copyNote}</span>
             )}
           </p>
           <button
@@ -79,7 +80,7 @@ export function ContentForm({ groups }: { groups: [string, SiteContentBlock[]][]
             ) : (
               <Save className="h-3.5 w-3.5" aria-hidden />
             )}
-            Save copy
+            {t.saveCopy}
           </button>
         </div>
       </div>

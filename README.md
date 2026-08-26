@@ -192,10 +192,21 @@ lays the red/orange glow behind the subject.
 
 ## Language & RTL
 
+**The public site** and **the dashboard** each have their own language toggle.
+
 A cookie (`nedal_locale`) holds the reader's choice; the navbar toggle sets it and
 the tree re-renders. Without a cookie the site uses the dashboard's default
 language. `<html lang dir>` follows the locale, and the layout uses logical CSS
 properties throughout, so Arabic mirrors correctly.
+
+The dashboard has its own toggle in the header, backed by a separate cookie
+(`nedal_admin_locale`), so the admin can work in Arabic while visitors see the
+English site (or the reverse). It translates the whole chrome — sidebar,
+collection and field labels, buttons, status text — and flips the layout to RTL.
+Content fields always stay bilingual (EN + AR) regardless of the dashboard's
+language, since both are edited side by side. Arabic UI strings live in
+`src/i18n/admin.ts`; Arabic field labels live beside the English ones in
+`src/lib/cms/collections.ts`.
 
 ---
 

@@ -8,6 +8,7 @@ import {
   reorderAction,
   togglePublishAction,
 } from "@/app/admin/actions";
+import type { AdminStrings } from "@/i18n/admin";
 
 const buttonClass =
   "inline-flex h-8 w-8 items-center justify-center rounded border border-[var(--color-line)] text-dim transition-colors hover:text-offwhite";
@@ -18,24 +19,26 @@ export function RowActions({
   published,
   supportsPublish,
   supportsOrder,
+  t,
 }: {
   collection: string;
   id: string;
   published: boolean;
   supportsPublish: boolean;
   supportsOrder: boolean;
+  t: AdminStrings;
 }) {
   return (
     <div className="flex items-center justify-end gap-1.5">
       {supportsOrder ? (
         <>
           <form action={reorderAction.bind(null, collection, id, "up")}>
-            <button type="submit" className={buttonClass} aria-label="Move up">
+            <button type="submit" className={buttonClass} aria-label={t.moveUp}>
               <MoveUp className="h-3.5 w-3.5" aria-hidden />
             </button>
           </form>
           <form action={reorderAction.bind(null, collection, id, "down")}>
-            <button type="submit" className={buttonClass} aria-label="Move down">
+            <button type="submit" className={buttonClass} aria-label={t.moveDown}>
               <MoveDown className="h-3.5 w-3.5" aria-hidden />
             </button>
           </form>
@@ -47,8 +50,8 @@ export function RowActions({
           <button
             type="submit"
             className={buttonClass}
-            aria-label={published ? "Unpublish" : "Publish"}
-            title={published ? "Unpublish" : "Publish"}
+            aria-label={published ? t.unpublish : t.publish}
+            title={published ? t.unpublish : t.publish}
           >
             {published ? (
               <EyeOff className="h-3.5 w-3.5" aria-hidden />
@@ -60,7 +63,7 @@ export function RowActions({
       ) : null}
 
       <form action={duplicateDocAction.bind(null, collection, id)}>
-        <button type="submit" className={buttonClass} aria-label="Duplicate" title="Duplicate">
+        <button type="submit" className={buttonClass} aria-label={t.duplicate} title={t.duplicate}>
           <Copy className="h-3.5 w-3.5" aria-hidden />
         </button>
       </form>
@@ -68,14 +71,14 @@ export function RowActions({
       <form
         action={deleteDocAction.bind(null, collection, id)}
         onSubmit={(event) => {
-          if (!confirm("Delete this record permanently?")) event.preventDefault();
+          if (!confirm(t.deleteConfirm)) event.preventDefault();
         }}
       >
         <button
           type="submit"
           className={`${buttonClass} hover:border-accent hover:text-accent`}
-          aria-label="Delete"
-          title="Delete"
+          aria-label={t.delete}
+          title={t.delete}
         >
           <Trash2 className="h-3.5 w-3.5" aria-hidden />
         </button>

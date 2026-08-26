@@ -48,8 +48,14 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-html[lang="ar"] {
+[lang="ar"] {
   --font-display: var(--font-arabic), var(--font-mono), ui-monospace, monospace;
+  /*
+   * `font-family` is inherited as a computed value, so redefining the variable
+   * alone would not re-resolve it inside an Arabic subtree (the dashboard runs
+   * its own language, independent of <html lang>). Declare it here too.
+   */
+  font-family: var(--font-display);
 }
 
 body {
@@ -123,7 +129,7 @@ body {
   color: var(--color-muted);
 }
 
-html[lang="ar"] .label {
+[lang="ar"] .label {
   letter-spacing: 0;
 }
 
@@ -134,9 +140,17 @@ html[lang="ar"] .label {
   text-transform: uppercase;
 }
 
-html[lang="ar"] .display {
+[lang="ar"] .display {
   letter-spacing: 0;
   line-height: 1.15;
+}
+
+/*
+ * Arabic script joins its letters, so tracking utilities that look editorial in
+ * Latin break the word shapes. Neutralize them inside any Arabic subtree.
+ */
+[lang="ar"] [class*="tracking-"] {
+  letter-spacing: normal;
 }
 
 /* --- Motion ---------------------------------------------------------- */

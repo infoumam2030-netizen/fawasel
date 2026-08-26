@@ -3,6 +3,8 @@ import type { Locale, Localized } from "@/lib/cms/types";
 /** Pure locale helpers — safe to import from client components. */
 
 export const LOCALE_COOKIE = "nedal_locale";
+/** The dashboard keeps its own language, separate from the public site. */
+export const ADMIN_LOCALE_COOKIE = "nedal_admin_locale";
 export const LOCALES: Locale[] = ["en", "ar"];
 
 export function isLocale(value: string | undefined): value is Locale {

@@ -20,41 +20,45 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import type { AdminStrings } from "@/i18n/admin";
 import { cn } from "@/lib/utils";
 
-const groups: { title: string; items: { href: string; label: string; icon: React.ElementType }[] }[] = [
-  {
-    title: "Overview",
-    items: [{ href: "/admin", label: "Dashboard", icon: LayoutDashboard }],
-  },
-  {
-    title: "Content",
-    items: [
-      { href: "/admin/projects", label: "Projects", icon: Briefcase },
-      { href: "/admin/clients", label: "Clients", icon: Building2 },
-      { href: "/admin/services", label: "Services", icon: Blocks },
-      { href: "/admin/skills", label: "Skills", icon: Sparkles },
-      { href: "/admin/tools", label: "Tools", icon: Wrench },
-      { href: "/admin/experience", label: "Experience", icon: ListOrdered },
-      { href: "/admin/testimonials", label: "Testimonials", icon: Quote },
-      { href: "/admin/metrics", label: "Metrics", icon: TrendingUp },
-    ],
-  },
-  {
-    title: "Site",
-    items: [
-      { href: "/admin/content", label: "Hero & copy", icon: FileText },
-      { href: "/admin/media", label: "Media library", icon: ImageIcon },
-      { href: "/admin/navigation_items", label: "Navigation", icon: Link2 },
-      { href: "/admin/social_links", label: "Social links", icon: Contact },
-      { href: "/admin/inquiries", label: "Inquiries", icon: Inbox },
-      { href: "/admin/settings", label: "Settings", icon: Settings },
-    ],
-  },
-];
+function buildGroups(t: AdminStrings) {
+  return [
+    {
+      title: t.groupOverview,
+      items: [{ href: "/admin", label: t.navDashboard, icon: LayoutDashboard }],
+    },
+    {
+      title: t.groupContent,
+      items: [
+        { href: "/admin/projects", label: t.navProjects, icon: Briefcase },
+        { href: "/admin/clients", label: t.navClients, icon: Building2 },
+        { href: "/admin/services", label: t.navServices, icon: Blocks },
+        { href: "/admin/skills", label: t.navSkills, icon: Sparkles },
+        { href: "/admin/tools", label: t.navTools, icon: Wrench },
+        { href: "/admin/experience", label: t.navExperience, icon: ListOrdered },
+        { href: "/admin/testimonials", label: t.navTestimonials, icon: Quote },
+        { href: "/admin/metrics", label: t.navMetrics, icon: TrendingUp },
+      ],
+    },
+    {
+      title: t.groupSite,
+      items: [
+        { href: "/admin/content", label: t.navContent, icon: FileText },
+        { href: "/admin/media", label: t.navMedia, icon: ImageIcon },
+        { href: "/admin/navigation_items", label: t.navNavigation, icon: Link2 },
+        { href: "/admin/social_links", label: t.navSocial, icon: Contact },
+        { href: "/admin/inquiries", label: t.navInquiries, icon: Inbox },
+        { href: "/admin/settings", label: t.navSettings, icon: Settings },
+      ],
+    },
+  ];
+}
 
-export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
+export function Sidebar({ t, onNavigate }: { t: AdminStrings; onNavigate?: () => void }) {
   const pathname = usePathname();
+  const groups = buildGroups(t);
 
   return (
     <nav aria-label="Dashboard" className="flex h-full flex-col gap-6 p-4">
