@@ -1,88 +1,75 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Sans_Arabic } from "next/font/google";
-import { siteConfig } from "@/config/site.config";
-import { Navbar } from "@/components/layout/Navbar";
+import { IBM_Plex_Sans_Arabic, JetBrains_Mono } from "next/font/google";
+
+import { getSettings } from "@/lib/cms/queries";
+import { dirFor, getLocale, pick } from "@/lib/i18n";
+
 import "./globals.css";
 
-const bodyFont = IBM_Plex_Sans_Arabic({
-  variable: "--font-ibm-plex-sans-arabic",
-  subsets: ["arabic", "latin"],
+const jetbrains = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const arabic = IBM_Plex_Sans_Arabic({
+  variable: "--font-arabic",
+  subsets: ["arabic"],
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
+export async function generateMetadata(): Promise<Metadata> {
+  const [settings, locale] = await Promise.all([getSettings(), getLocale()]);
+  const title = pick(settings.siteTitle, locale);
+  const description = pick(settings.siteDescription, locale);
+  const base = process.env.NEXT_PUBLIC_SITE_URL;
+
+  return {
+    metadataBase: base ? new URL(base) : undefined,
+    title: { default: title, template: `%s — NEDAL ELABID` },
+    description,
+    keywords: settings.keywords.split(",").map((k) => k.trim()).filter(Boolean),
+    icons: { icon: settings.favicon || "/favicon.ico" },
+    openGraph: {
+      type: "profile",
+      title,
+      description,
+      images: settings.ogImage ? [{ url: settings.ogImage }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: settings.ogImage ? [settings.ogImage] : undefined,
+    },
+  };
+}
+
 export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  themeColor: siteConfig.colors.navy,
+  themeColor: "#08090b",
+  colorScheme: "dark",
 };
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.seo.siteUrl),
-  title: {
-    default: siteConfig.seo.title,
-    template: `%s | ${siteConfig.projectName}`,
-  },
-  description: siteConfig.seo.description,
-  keywords: siteConfig.seo.keywords,
-  alternates: { canonical: "/" },
-  openGraph: {
-    type: "website",
-    locale: "ar_SA",
-    url: siteConfig.seo.siteUrl,
-    title: siteConfig.seo.title,
-    description: siteConfig.seo.description,
-    siteName: siteConfig.projectName,
-    images: [{ url: siteConfig.seo.ogImage, width: 1200, height: 630, alt: siteConfig.projectName }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: siteConfig.seo.title,
-    description: siteConfig.seo.description,
-    images: [siteConfig.seo.ogImage],
-  },
-  robots: { index: true, follow: true },
-  icons: { icon: "/favicon.ico" },
-};
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const [settings, locale] = await Promise.all([getSettings(), getLocale()]);
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "ResidentialComplex",
-  name: siteConfig.projectName,
-  description: siteConfig.seo.description,
-  url: siteConfig.seo.siteUrl,
-  image: siteConfig.seo.ogImage,
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "الرياض",
-    addressCountry: "SA",
-  },
-  ...(siteConfig.location.coordinates.lat && siteConfig.location.coordinates.lng
-    ? {
-        geo: {
-          "@type": "GeoCoordinates",
-          latitude: siteConfig.location.coordinates.lat,
-          longitude: siteConfig.location.coordinates.lng,
-        },
-      }
-    : {}),
-  numberOfUnits: siteConfig.unitsCount,
-  ...(siteConfig.contact.phone ? { telephone: siteConfig.contact.phone } : {}),
-};
-
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ar" dir="rtl" className={`${bodyFont.variable} h-full antialiased`}>
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      </head>
-      <body className="min-h-full flex flex-col bg-bg text-text">
-        <Navbar />
-        {children}
-      </body>
+    <html
+      lang={locale}
+      dir={dirFor(locale)}
+      className={`${jetbrains.variable} ${arabic.variable}`}
+      style={
+        {
+          "--accent-from": settings.accentFrom,
+          "--accent-to": settings.accentTo,
+          "--accent": settings.accentTo,
+          "--visual-intensity": String((settings.visualIntensity ?? 70) / 100),
+        } as React.CSSProperties
+      }
+      suppressHydrationWarning
+    >
+      <body>{children}</body>
     </html>
   );
 }

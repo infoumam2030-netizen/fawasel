@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="NEDAL ELABID">
+  <defs>
+    <radialGradient id="g" cx="78%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#ff7a18"/>
+      <stop offset="50%" stop-color="#c81e18"/>
+      <stop offset="100%" stop-color="#08090b"/>
+    </radialGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#64748b" stroke-width="0.6" opacity="0.28"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="#08090b"/>
+  <circle cx="950" cy="315" r="300" fill="url(#g)" opacity="0.7"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <g font-family="monospace" fill="#edeae5">
+    <text x="80" y="290" font-size="76" font-weight="700" letter-spacing="-2">NEDAL ELABID</text>
+    <text x="80" y="340" font-size="22" letter-spacing="10" opacity="0.75">MARKETING MANAGER</text>
+    <text x="80" y="400" font-size="18" opacity="0.6">Real Estate &amp; E-Commerce Growth</text>
+  </g>
+</svg>

@@ -1,116 +1,290 @@
 @import "tailwindcss";
 
+/*
+ * Executive cyberpunk design system.
+ * Near-black / graphite / off-white foundation; red→orange only as signal.
+ * Accent values are injected on <html> by the CMS Appearance settings.
+ */
 :root {
-  --color-navy: #071a2b;
-  --color-deep-navy: #04111d;
-  --color-luxury-navy: #0b2238;
-  --color-gold: #c9a45c;
-  --color-dark-gold: #9e7835;
-  --color-light-gold: #e2cc9b;
-  --color-bg: #f8f6f0;
-  --color-white: #ffffff;
-  --color-text: #151a1f;
-  --color-muted: #66707a;
-  --color-border: #ded8cc;
+  --color-void: #08090b;
+  --color-ink: #0d0f13;
+  --color-graphite: #14171d;
+  --color-graphite-soft: #1c2027;
+  --color-offwhite: #edeae5;
+  --color-muted: #8c9199;
+  --color-dim: #5d626b;
+  --color-line: rgba(237, 234, 229, 0.1);
+  --color-line-strong: rgba(237, 234, 229, 0.22);
+
+  /* Overridden inline from site settings (Appearance). */
+  --accent-from: #c81e18;
+  --accent-to: #ff7a18;
+  --accent: var(--accent-to);
+  --visual-intensity: 0.7;
+
+  --font-display: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
 }
 
 @theme inline {
-  --color-navy: var(--color-navy);
-  --color-deep-navy: var(--color-deep-navy);
-  --color-luxury-navy: var(--color-luxury-navy);
-  --color-gold: var(--color-gold);
-  --color-dark-gold: var(--color-dark-gold);
-  --color-light-gold: var(--color-light-gold);
-  --color-bg: var(--color-bg);
-  --color-white: var(--color-white);
-  --color-text: var(--color-text);
+  --color-void: var(--color-void);
+  --color-ink: var(--color-ink);
+  --color-graphite: var(--color-graphite);
+  --color-graphite-soft: var(--color-graphite-soft);
+  --color-offwhite: var(--color-offwhite);
   --color-muted: var(--color-muted);
-  --color-border: var(--color-border);
+  --color-dim: var(--color-dim);
+  --color-line: var(--color-line);
+  --color-accent: var(--accent);
+  --color-accent-from: var(--accent-from);
+  --color-accent-to: var(--accent-to);
 
-  --font-sans: var(--font-ibm-plex-sans-arabic);
-
-  --animate-shimmer: shimmer 2.4s linear infinite;
-
-  @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
+  --font-sans: var(--font-display);
+  --font-mono: var(--font-display);
 }
 
 html {
   scroll-behavior: smooth;
+  background: var(--color-void);
+  -webkit-text-size-adjust: 100%;
+}
+
+html[lang="ar"] {
+  --font-display: var(--font-arabic), var(--font-mono), ui-monospace, monospace;
+}
+
+body {
+  background: var(--color-void);
+  color: var(--color-offwhite);
+  font-family: var(--font-display);
+  font-feature-settings: "ss01", "cv01";
+  overflow-x: clip;
+  min-height: 100dvh;
+}
+
+::selection {
+  background: var(--accent-to);
+  color: #08090b;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-to);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* --- Surfaces -------------------------------------------------------- */
+
+.glass {
+  background: color-mix(in srgb, var(--color-graphite) 62%, transparent);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  border: 1px solid var(--color-line);
+}
+
+.hairline {
+  border-color: var(--color-line);
+}
+
+/* Fine background grid used behind sections. */
+.grid-field {
+  background-image:
+    linear-gradient(to right, rgba(237, 234, 229, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(237, 234, 229, 0.045) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Subtle film grain; opacity follows the Appearance intensity slider. */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: calc(0.06 * var(--visual-intensity));
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.accent-text {
+  background: linear-gradient(96deg, var(--accent-from), var(--accent-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.accent-rule {
+  background: linear-gradient(90deg, var(--accent-from), var(--accent-to), transparent);
+}
+
+/* Micro-typography: technical labels, coordinates, data ticks. */
+.label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+html[lang="ar"] .label {
+  letter-spacing: 0;
+}
+
+.display {
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+html[lang="ar"] .display {
+  letter-spacing: 0;
+  line-height: 1.15;
+}
+
+/* --- Motion ---------------------------------------------------------- */
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes nav-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ken-burns {
+  from {
+    transform: scale(1.12);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-tick {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-hero-rise {
+  opacity: 0;
+  animation: hero-rise 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-nav-drop {
+  opacity: 0;
+  animation: nav-drop 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+
+.animate-ken-burns {
+  animation: ken-burns 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-tick {
+  animation: pulse-tick 3.2s ease-in-out infinite;
+}
+
+/* Reveal-on-scroll primitive (see components/ui/Reveal.tsx). */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Buttons: a single controlled shine sweep, no looping glitter. */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.btn-shine::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-120%);
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 80%
+  );
+  transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: -1;
+}
+
+.btn-shine:hover::before,
+.btn-shine:focus-visible::before {
+  transform: translateX(120%);
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  .animate-hero-rise,
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
 }
 
-body {
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-family: var(--font-ibm-plex-sans-arabic), sans-serif;
+/* --- Admin surface ---------------------------------------------------- */
+
+.admin-input {
+  width: 100%;
+  background: var(--color-ink);
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-offwhite);
 }
 
-::selection {
-  background: var(--color-gold);
-  color: var(--color-navy);
+.admin-input:focus {
+  border-color: color-mix(in srgb, var(--accent-to) 60%, transparent);
+  outline: none;
 }
 
-/* Thin architectural gold rule — used as a section divider/accent line */
-.gold-rule {
-  position: relative;
+.admin-label {
   display: block;
-  width: 3rem;
-  height: 2px;
-  background: var(--color-gold);
-}
-
-.gold-rule-vertical {
-  width: 1px;
-  background: linear-gradient(to bottom, var(--color-gold), transparent);
-}
-
-/* Editorial section label: small caps, gold, letter-spaced */
-.section-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.625rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--color-gold);
-}
-
-.shimmer-bg {
-  background: linear-gradient(
-    90deg,
-    rgba(21, 26, 31, 0) 0%,
-    rgba(21, 26, 31, 0.06) 50%,
-    rgba(21, 26, 31, 0) 100%
-  );
-  background-size: 200% 100%;
-}
-
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-bg);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-navy);
-  border-radius: 999px;
-}
-
-:focus-visible {
-  outline: 2px solid var(--color-gold);
-  outline-offset: 3px;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: 0.35rem;
 }

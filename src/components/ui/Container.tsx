@@ -1,13 +1,13 @@
 import { cn } from "@/lib/utils";
 
-export function Container({
-  children,
-  className,
-  as: Tag = "div",
-}: {
-  children: React.ReactNode;
-  className?: string;
-  as?: React.ElementType;
-}) {
-  return <Tag className={cn("mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10", className)}>{children}</Tag>;
+type Props = React.HTMLAttributes<HTMLElement> & {
+  as?: "div" | "section" | "header" | "footer" | "main" | "article";
+};
+
+export function Container({ className, children, as: Tag = "div", ...props }: Props) {
+  return (
+    <Tag className={cn("mx-auto w-full max-w-[1400px] px-5 sm:px-8 lg:px-12", className)} {...props}>
+      {children}
+    </Tag>
+  );
 }

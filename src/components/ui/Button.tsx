@@ -1,51 +1,57 @@
-"use client";
+import Link from "next/link";
 
-import { forwardRef } from "react";
-import { motion, type HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-type ButtonVariant = "gold" | "navy" | "outline" | "outline-light" | "ghost";
-type ButtonSize = "sm" | "md" | "lg";
+type Variant = "accent" | "outline" | "ghost";
 
-interface ButtonProps extends HTMLMotionProps<"button"> {
-  variant?: ButtonVariant;
-  size?: ButtonSize;
+const base =
+  "btn-shine inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-xs font-medium uppercase tracking-[0.18em] transition-transform duration-300 hover:scale-[1.02] active:scale-[0.99] disabled:opacity-50 disabled:hover:scale-100";
+
+const variants: Record<Variant, string> = {
+  accent:
+    "text-[#0a0a0b] bg-[linear-gradient(96deg,var(--accent-from),var(--accent-to))] shadow-[0_0_28px_-10px_var(--accent-to)]",
+  outline: "border border-[var(--color-line-strong)] text-offwhite hover:border-accent",
+  ghost: "text-muted hover:text-offwhite",
+};
+
+export function Button({
+  variant = "accent",
+  className,
+  children,
+  ...props
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant }) {
+  return (
+    <button className={cn(base, variants[variant], className)} {...props}>
+      {children}
+    </button>
+  );
 }
 
-const VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  gold: "bg-gold text-navy hover:bg-light-gold",
-  navy: "bg-navy text-white hover:bg-luxury-navy",
-  outline: "border border-navy/25 text-navy hover:border-navy hover:bg-navy/[0.03]",
-  "outline-light": "border border-white/35 text-white hover:border-gold hover:text-gold",
-  ghost: "text-navy hover:text-gold",
-};
-
-const SIZE_CLASSES: Record<ButtonSize, string> = {
-  sm: "px-5 py-2 text-xs",
-  md: "px-7 py-3 text-sm",
-  lg: "px-9 py-4 text-base",
-};
-
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "navy", size = "md", children, ...props }, ref) => {
+export function ButtonLink({
+  href,
+  variant = "accent",
+  className,
+  children,
+  external,
+  ...props
+}: {
+  href: string;
+  variant?: Variant;
+  className?: string;
+  children: React.ReactNode;
+  external?: boolean;
+} & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href">) {
+  const classes = cn(base, variants[variant], className);
+  if (external) {
     return (
-      <motion.button
-        ref={ref}
-        whileHover={{ y: -1 }}
-        whileTap={{ y: 0 }}
-        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        className={cn(
-          "inline-flex items-center justify-center gap-2.5 font-medium tracking-wide transition-colors duration-300 focus-visible:outline-none",
-          VARIANT_CLASSES[variant],
-          SIZE_CLASSES[size],
-          className
-        )}
-        {...props}
-      >
+      <a href={href} target="_blank" rel="noreferrer noopener" className={classes} {...props}>
         {children}
-      </motion.button>
+      </a>
     );
   }
-);
-
-Button.displayName = "Button";
+  return (
+    <Link href={href} className={classes} {...props}>
+      {children}
+    </Link>
+  );
+}

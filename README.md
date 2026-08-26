@@ -1,136 +1,245 @@
-# طيبة 109
+# NEDAL ELABID — Portfolio & CMS
 
-موقع تعريفي فاخر لمشروع **طيبة 109** — مشروع سكني تحت الإنشاء يضم 14 وحدة
-سكنية (شقق ودوبلكسات) شمال شرق الرياض. مبني بهوية بصرية تحريرية معمارية
-(كحلي/ذهبي)، وبنية قابلة لإعادة الاستخدام لأي مشروع سكني مستقبلي.
+Personal brand platform for **NEDAL ELABID / نضال الأبيض** — Marketing Manager,
+Growth Marketer, Creative Director — built as two connected halves:
 
-## المكدس التقني
+1. a **premium public portfolio** (Executive Cyberpunk × Marketing Intelligence
+   direction, English + Arabic with correct RTL), and
+2. a **protected CMS dashboard** at `/admin` where every project, client,
+   service, skill, metric, social link and line of copy is edited — no code
+   changes, no redeploy.
 
-- **Next.js 15** (App Router) + **TypeScript**
-- **Tailwind CSS v4**
-- **Framer Motion** للحركة والانتقالات (بطيئة، هادئة، محترمة لـ `prefers-reduced-motion`)
-- **Lucide Icons**
-- **next/font/google** — خط **IBM Plex Sans Arabic** فقط في كل الموقع
-- **Google Sheets** (googleapis + تصدير CSV عام) لبيانات توفر الوحدات
+A logged-in admin can create a project, upload its media, publish it, and see it
+live on `/projects` and `/projects/<slug>` immediately. The same is true for
+clients, services, skills, metrics, navigation, social links and site copy.
 
-## البدء السريع
+---
+
+## Stack
+
+| Layer | Choice |
+| --- | --- |
+| Framework | Next.js 15 (App Router, React 19, TypeScript) |
+| Styling | Tailwind CSS v4 + a token-based design system in `src/app/globals.css` |
+| Icons | lucide-react |
+| Type | JetBrains Mono (Latin) · IBM Plex Sans Arabic (Arabic) |
+| Data | Supabase (Postgres + Storage) when configured, file-backed JSON otherwise |
+| Auth | Server-side session cookie (HMAC-signed, httpOnly), scrypt password hash |
+
+> The original brief specified React 18 + Vite. Next.js was chosen instead so the
+> dashboard's authentication and CRUD run **on the server** (no service-role key
+> in the browser) and so each case study gets real per-page SEO metadata. Every
+> other requirement in the brief is unchanged.
+
+---
+
+## Quick start
 
 ```bash
 npm install
-cp .env.example .env.local   # اختياري: لربط Google Sheets ببيانات حقيقية
-npm run dev
+cp .env.example .env.local     # optional for local dev — see below
+npm run dev                    # http://localhost:3000
 ```
 
-افتح [http://localhost:3000](http://localhost:3000). بدون ربط Google
-Sheets، يعمل الموقع تلقائيًا ببيانات تجريبية (14 وحدة: 10 شقق + 4 دوبلكس)
-مطابقة لهيكل المشروع الحقيقي.
+With no environment variables at all, the app runs on the **file adapter**
+(`data/cms.json`, seeded on first boot) and the dashboard accepts the local
+development credentials:
 
-### أوامر أخرى
+```
+http://localhost:3000/admin
+email:    admin@nedal.local
+password: nedal-dev-admin
+```
+
+Those dev defaults are refused when `NODE_ENV=production`.
+
+### Scripts
 
 ```bash
-npm run build   # بناء الإنتاج
-npm start       # تشغيل بناء الإنتاج محليًا
-npm run lint    # فحص الشيفرة
+npm run dev         # development server
+npm run build       # production build
+npm start           # run the production build
+npm run lint        # eslint
+npm run typecheck   # tsc --noEmit
+npm run smoke       # end-to-end check against a running server (see below)
+npm run admin:hash -- "your-password"   # print ADMIN_PASSWORD_HASH + ADMIN_SESSION_SECRET
 ```
 
-## ملف الإعدادات المركزي
+---
 
-كل محتوى المشروع (الاسم، الحالة، الألوان، الأسعار، المميزات، المعالم
-القريبة، الضمانات، البنية التحتية، بيانات التواصل...) موجود في مكان واحد:
+## Environment variables
 
-```
-src/config/site.config.ts
-```
+All optional locally; the admin ones are **required in production**.
 
-لا تحتوي أي مكوّنات على محتوى مكتوب مباشرة — كل شيء يُقرأ من هذا الملف.
-
-### بيانات لم تُدخل بعد (بيّنة عمدًا)
-
-الحقول التالية تُركت فارغة لأن المعلومات الحقيقية لم تُزوَّد بعد، ويجب
-تعديلها يدويًا في `site.config.ts` قبل الإطلاق:
-
-- `contact.whatsapp`, `contact.phone`
-- `location.googleMapsUrl`, `location.googleMapsEmbedUrl`, `location.coordinates`
-- `constructionProgress` (يبقى `null` ويظهر "تحت الإنشاء" فقط، حتى تُزوَّد
-  نسبة إنجاز حقيقية لاحقًا)
-
-أزرار واتساب/الاتصال تتعطل تلقائيًا (بمظهر معطّل واضح) طالما هذه الحقول
-فارغة، بدلًا من إنتاج روابط مكسورة.
-
-## ربط Google Sheets (بيانات الوحدات)
-
-الطريقة الافتراضية **لا تحتاج Service Account ولا مفتاح JSON**: شارك
-الشيت بخيار "Anyone with the link can view"، وأضف معرّفه فقط:
-
-```
-GOOGLE_SHEET_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-```
-
-الأعمدة المتوقعة في تبويب "Units"، بالترتيب، بدءًا من الصف الثاني:
-
-| العمود | الوصف |
+| Variable | Purpose |
 | --- | --- |
-| A | Unit ID (رقم الوحدة) |
-| B | Name (اسم الوحدة) |
-| C | Type (`شقة` أو `دوبلكس`) |
-| D | Area (المساحة بالمتر) |
-| E | Price (السعر) |
-| F | Status (`متاح` / `محجوز` / `مباع`) |
-| G | Floor (الدور، اختياري) |
-| H | Features (مميزات مفصولة بـ `;`) |
-| I | Images (روابط صور مفصولة بـ `;`) |
-| J | Floor plan (رابط صورة المخطط) |
+| `NEXT_PUBLIC_SITE_URL` | Absolute site URL — canonical/OG URLs, `sitemap.xml` |
+| `ADMIN_EMAIL` | The single admin account's email |
+| `ADMIN_PASSWORD_HASH` | `scrypt:<salt>:<key>` from `npm run admin:hash` |
+| `ADMIN_PASSWORD` | Plain-text alternative — development only |
+| `ADMIN_SESSION_SECRET` | 32+ random chars; signs the session cookie |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-only key; never exposed to the browser |
+| `SUPABASE_MEDIA_BUCKET` | Storage bucket for uploads (default `media`) |
+| `CMS_DATA_FILE` | Override the JSON file path (file adapter only) |
 
-للاطلاع على سلوك الموقع في كل حالة ربط (غير مربوط / مربوط وشغال / مربوط
-وفشل الطلب)، راجع التعليقات في `src/services/units.ts` — النقطة المهمة:
-الموقع لا يتعطل أبدًا؛ يتدرّج تلقائيًا لبيانات تجريبية أو حالة فارغة.
+Set up the admin account:
 
-## الوسائط (Media Assets)
-
-نظرًا لعدم توفر تصوير حقيقي بعد، تم توليد رسومات SVG معمارية تجريدية
-(خطوط ذهبية رفيعة على خلفية كحلية) كبدائل مؤقتة:
-
-```
-public/images/hero/hero.svg
-public/images/gallery/privacy.svg
-public/images/floor-plans/apartment.svg
-public/images/floor-plans/duplex-first.svg
-public/images/floor-plans/duplex-second.svg
-public/images/og/og-image.svg
+```bash
+npm run admin:hash -- "a-long-password"
+# ADMIN_PASSWORD_HASH=scrypt:…
+# ADMIN_SESSION_SECRET=…
 ```
 
-استبدل هذه الملفات بنفس الأسماء (أو حدّث المسارات في `site.config.ts`)
-عند توفر التصوير الفعلي والمخططات الهندسية، دون أي تعديل على الشيفرة.
+---
 
-## هيكل المشروع
+## Database setup (Supabase)
+
+1. Create a Supabase project.
+2. Open the SQL editor and run [`supabase/schema.sql`](supabase/schema.sql). It
+   creates every collection table, the `updated_at` triggers, row-level security
+   (anonymous clients can read published rows only; all writes require the
+   service role), the unique project-slug index and the public `media` storage
+   bucket.
+3. Put `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in the
+   environment. The app switches adapters automatically — no code changes.
+4. First boot with an empty database shows empty collections; seed content by
+   entering it in the dashboard, or copy `data/cms.json` values across.
+
+### Why an adapter layer
+
+`src/lib/cms/store.ts` defines one `CmsStore` interface. Two implementations
+live in `src/lib/cms/adapters/`:
+
+* `supabase-store.ts` — Postgres via Supabase (production).
+* `json-store.ts` — a real file-backed store for local development and
+  single-node hosts. It re-reads the file when it changes on disk, writes
+  atomically, and reports `writable: false` (surfaced in the dashboard header)
+  on a read-only filesystem. It is **not** suitable for serverless or
+  multi-instance deployments — use Supabase there.
+
+Swapping in another backend means writing one more implementation of that
+interface; no page, component or form changes.
+
+---
+
+## Project structure
 
 ```
 src/
-  app/                 صفحات ومسارات API (App Router)
+  app/
+    (site)/                 public site: /, /about, /services, /projects,
+                            /projects/[slug], /clients, /contact
+    admin/
+      (auth)/login          sign-in
+      (dashboard)/          guarded dashboard
+        [collection]/       list · new · edit for every collection
+        content/            hero & site copy (EN + AR)
+        media/              media library
+        settings/           SEO, contact, appearance, sections
+      actions.ts            all server actions (auth + CRUD)
+    api/contact             public inquiry endpoint (validated + sanitized)
+    api/admin/media         authenticated upload endpoint
   components/
-    layout/            شريط التنقل العلوي
-    sections/           14 قسمًا لتدفق الصفحة الرئيسية
-    ui/                 مكوّنات واجهة قابلة لإعادة الاستخدام
-  config/               site.config.ts — كل المحتوى في مكان واحد
-  hooks/                React hooks (وحدات مباشرة، عدّاد تصاعدي...)
-  lib/                  دوال مساعدة، أنماط حركة، تجميع بيانات الوحدات
-  services/             منطق الأعمال (Google Sheets، تحويل بيانات الوحدات)
-  types/                تعريفات TypeScript المشتركة
+    public/                 hero, sections, navbar, footer, forms
+    admin/                  shell, sidebar, generic doc form, media picker
+    ui/                     container, reveal, count-up, decor, empty states
+  lib/
+    cms/                    types, seed data, collections config, store, queries
+    auth.ts                 session + password verification
+    locale.ts / i18n.ts     locale cookie, RTL direction, copy accessor
+supabase/schema.sql         database + storage setup
+scripts/smoke.mjs           end-to-end verification
 ```
 
-## الأداء وإمكانية الوصول
+The dashboard is **descriptor-driven**: `src/lib/cms/collections.ts` declares the
+fields of each collection and the list/edit screens render themselves from it, so
+adding a content field is a one-line change.
 
-- مكوّنات خادمية (Server Components) افتراضيًا؛ الحدود العميلية محصورة
-  بالأقسام التفاعلية فقط (تبويبات، قوائم، عدّادات).
-- تحميل كسول وتقسيم للشيفرة (`next/dynamic`) للأقسام الأدنى من الصفحة.
-- تحسين الصور عبر `next/image`.
-- هيكل عناوين دلالي، `aria-label` على العناصر التفاعلية، ودعم كامل لـ
-  `prefers-reduced-motion` بدون أي تعارض في الترطيب (hydration).
-- بيانات SEO عربية كاملة (Metadata، OpenGraph، Twitter، Schema.org،
-  `robots.txt`، `sitemap.xml`).
+---
 
-## النشر
+## Content model
 
-يمكن نشر المشروع مباشرة على [Vercel](https://vercel.com/new) أو أي منصة
-تدعم Next.js 15. تأكد من ضبط متغيرات البيئة نفسها الموجودة في
-`.env.example` في إعدادات المنصة المستخدمة.
+`projects · clients · services · skills · tools · experience · testimonials ·
+metrics · social_links · navigation_items · media_assets · site_content ·
+site_settings · inquiries`
+
+Every text field that appears on the site exists in **both English and Arabic**;
+an empty language falls back to the other one. Projects relate to a client and to
+the services delivered by id, never by duplicated text.
+
+### What ships seeded, and what does not
+
+Seeded from the brief: the 16 services, the capability matrix, the five known
+clients, the seven confirmed metrics, the six social links, navigation, and all
+hero/section copy.
+
+Deliberately **empty**: projects, experience, testimonials and tools. Nothing was
+invented — the site renders elegant empty states until real records are entered.
+The same applies to imagery: `public/images/portrait-*.svg` are placeholders.
+
+### Adding the real portrait
+
+1. Sign in → **Media library** → upload the portrait(s).
+2. **Settings → Imagery** → set *Hero portrait* (and optionally *Hero spotlight
+   reveal*, which is revealed by the cursor spotlight) and *About portrait*.
+
+The hero is designed for a cinematic, high-contrast editorial portrait with black
+clothing and deep shadows; the layout keeps negative space for the typography and
+lays the red/orange glow behind the subject.
+
+---
+
+## Language & RTL
+
+A cookie (`nedal_locale`) holds the reader's choice; the navbar toggle sets it and
+the tree re-renders. Without a cookie the site uses the dashboard's default
+language. `<html lang dir>` follows the locale, and the layout uses logical CSS
+properties throughout, so Arabic mirrors correctly.
+
+---
+
+## Accessibility & performance
+
+Semantic landmarks and headings, skip link, keyboard-navigable menus and
+controls, visible focus rings, labelled form fields with accessible error
+messages, alt text on meaningful images, `aria-hidden` on decoration.
+
+`prefers-reduced-motion` disables the hero's pointer effects, the counters and
+every reveal. All pointer-driven motion runs in a single `requestAnimationFrame`
+loop that is cleaned up on unmount, paused when the tab is hidden and skipped on
+touch devices. Below-the-fold media is lazy-loaded.
+
+---
+
+## Verification
+
+With a server running (`npm run build && npm start`):
+
+```bash
+npm run smoke
+```
+
+`scripts/smoke.mjs` drives a real browser through: every public route in both
+languages, horizontal-overflow checks at 1280px and 390px, the admin redirect for
+anonymous visitors, sign-in, creating and publishing a project, seeing it on the
+listing, the homepage and its case-study page, unpublishing it (public 404),
+deleting it, uploading and deleting a media asset, the contact form's success
+state, and a console-error check. It exits non-zero on the first failure.
+
+Set `BASE_URL` to test another origin, and `ADMIN_EMAIL` / `ADMIN_PASSWORD` to use
+non-default credentials.
+
+---
+
+## Deployment
+
+1. Run `supabase/schema.sql` and set the Supabase variables (required — a
+   serverless filesystem cannot persist the JSON adapter).
+2. Set `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH`, `ADMIN_SESSION_SECRET` and
+   `NEXT_PUBLIC_SITE_URL`.
+3. `npm run build` → `npm start` (or deploy to any Next.js host).
+4. Sign in at `/admin`, upload the portrait and publish the first case study.
+
+`/admin` and `/api` are excluded from `robots.txt`, and the dashboard sets
+`noindex`.

@@ -1,13 +1,28 @@
 import type { MetadataRoute } from "next";
-import { siteConfig } from "@/config/site.config";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+import { getProjects } from "@/lib/cms/queries";
+
+// Projects come from the CMS, so the sitemap is generated per request.
+export const dynamic = "force-dynamic";
+
+const BASE = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "";
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const projects = await getProjects();
+  const staticRoutes = ["", "/about", "/services", "/projects", "/clients", "/contact"];
+
   return [
-    {
-      url: siteConfig.seo.siteUrl,
+    ...staticRoutes.map((route) => ({
+      url: `${BASE}${route || "/"}`,
       lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 1,
-    },
+      changeFrequency: "monthly" as const,
+      priority: route === "" ? 1 : 0.7,
+    })),
+    ...projects.map((project) => ({
+      url: `${BASE}/projects/${project.slug}`,
+      lastModified: new Date(project.updatedAt),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
   ];
 }

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000" role="img" aria-label="Portrait placeholder">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="42%" r="55%">
+      <stop offset="0%" stop-color="#ff7a18"/>
+      <stop offset="55%" stop-color="#c81e18"/>
+      <stop offset="100%" stop-color="#0d0f13"/>
+    </radialGradient>
+    <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="55%" stop-color="#08090b" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#08090b" stop-opacity="1"/>
+    </linearGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#64748b" stroke-width="0.6" opacity="0.25"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="1000" fill="#0d0f13"/>
+  <circle cx="400" cy="440" r="280" fill="url(#glow)" opacity="0.85"/>
+  <rect width="800" height="1000" fill="url(#grid)"/>
+  <g fill="#08090b">
+    <ellipse cx="400" cy="380" rx="132" ry="168"/>
+    <path d="M400 560c-150 0-250 92-250 206v234h500V766c0-114-100-206-250-206z"/>
+  </g>
+  <rect width="800" height="1000" fill="url(#fade)"/>
+  <g fill="#edeae5" font-family="monospace" font-size="16" letter-spacing="6" opacity="0.55">
+    <text x="40" y="944">PORTRAIT PLACEHOLDER</text>
+    <text x="40" y="972" font-size="12" opacity="0.7">MEDIA LIBRARY / APPEARANCE / HERO IMAGE</text>
+  </g>
+</svg>

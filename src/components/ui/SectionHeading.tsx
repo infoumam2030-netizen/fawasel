@@ -1,57 +1,31 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { fadeUpSlow, viewportOnce } from "@/lib/animations";
+import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/utils";
 
-interface SectionHeadingProps {
-  eyebrow?: string;
-  title: string;
-  description?: string;
-  align?: "center" | "start";
-  className?: string;
-  light?: boolean;
-}
-
+/** Editorial section head: index tick, eyebrow, oversized title, thin rule. */
 export function SectionHeading({
   eyebrow,
   title,
-  description,
+  intro,
+  index,
   align = "start",
   className,
-  light = false,
-}: SectionHeadingProps) {
+}: {
+  eyebrow?: string;
+  title: string;
+  intro?: string;
+  index?: string;
+  align?: "start" | "center";
+  className?: string;
+}) {
   return (
-    <motion.div
-      variants={fadeUpSlow}
-      initial="hidden"
-      whileInView="visible"
-      viewport={viewportOnce}
-      className={cn(
-        "flex flex-col gap-5",
-        align === "center" ? "items-center text-center" : "items-start text-start",
-        className
-      )}
-    >
-      {eyebrow && (
-        <span className="section-label">
-          <span className="gold-rule" />
-          {eyebrow}
-        </span>
-      )}
-      <h2
-        className={cn(
-          "text-3xl font-semibold leading-[1.15] tracking-tight sm:text-4xl md:text-5xl",
-          light ? "text-white" : "text-navy"
-        )}
-      >
-        {title}
-      </h2>
-      {description && (
-        <p className={cn("max-w-xl text-base leading-relaxed sm:text-lg", light ? "text-white/70" : "text-muted")}>
-          {description}
-        </p>
-      )}
-    </motion.div>
+    <Reveal className={cn("max-w-3xl", align === "center" && "mx-auto text-center", className)}>
+      <div className={cn("flex items-center gap-3", align === "center" && "justify-center")}>
+        {index ? <span className="label text-accent">{index}</span> : null}
+        {eyebrow ? <span className="label">{eyebrow}</span> : null}
+        <span className="accent-rule h-px w-16 opacity-70" aria-hidden />
+      </div>
+      <h2 className="display mt-5 text-[clamp(2rem,5vw,3.75rem)]">{title}</h2>
+      {intro ? <p className="mt-5 max-w-2xl text-sm leading-relaxed text-muted">{intro}</p> : null}
+    </Reveal>
   );
 }
